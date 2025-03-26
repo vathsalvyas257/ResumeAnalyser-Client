@@ -59,7 +59,7 @@ const ImageScraper = () => {
       const formData = new FormData();
       formData.append("image", selectedFile);
 
-      const response = await axios.post("http://localhost:7777/resume/image/scraper", formData, {
+      const response = await axios.post("http://localhost:7777/image/scraper", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -130,7 +130,7 @@ const ImageScraper = () => {
       {result && display && (
         <div className="mt-6 bg-white text-gray-700 p-4 rounded-lg shadow mb-16">
           <h2 className="text-lg font-bold text-indigo-600">Image Analysis Report</h2>
-          <p className="whitespace-pre-line mt-2">{JSON.stringify(result, null, 2)}</p>
+          <p className="whitespace-pre-line mt-2">{JSON.stringify(result.data, null, 2)}</p>
         </div>
       )}
     </div>
