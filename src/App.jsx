@@ -7,7 +7,6 @@ import AuthForm from "./components/AuthForm";
 import LandingPage from "./components/LandingPage";
 import Stats from "./components/Stats";
 import ProfilePage from "./components/ProfilePage";
-import ImageScraper from "./components/ImageScraper";
 
 function App() {
   return (
