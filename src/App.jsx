@@ -27,14 +27,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="image-scraper"
-            element={
-              <ProtectedRoute>
-                <ImageScraper />
-              </ProtectedRoute>
-            }
-          />
         </Route>
       </Routes>
     </BrowserRouter>

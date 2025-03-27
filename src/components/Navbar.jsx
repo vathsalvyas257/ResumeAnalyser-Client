@@ -57,7 +57,7 @@ const Navbar = () => {
       <div className="hidden md:flex gap-18">
         <Link to="/" className="hover:text-blue-400">Home</Link>
         <Link to="/analyse" className="hover:text-blue-400">Analyze</Link>
-        <Link to="/image-scraper" className="hover:text-blue-400">Image-Scraper</Link>
+        <Link to="/contact" className="hover:text-blue-400">Contact</Link>
         <Link to="/about" className="hover:text-blue-400">About</Link>
         <Link to="/stats" className="hover:text-blue-400">Stats</Link>
       </div>
