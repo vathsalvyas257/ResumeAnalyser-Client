@@ -65,15 +65,15 @@ const AuthForm = () => {
 
   const handleGoogleLogin = async (details) => {
     try {
-      
-      const response = await axios.post(`${API_URL}/googlelogin`, { emailId:details.email, fullName: details.name });
+      console.log(details);
+      const response = await axios.post(`${API_URL}/googlelogin`, { emailId:details.email, firstName: details.family_name, lastName: details.given_name });
 
       localStorage.setItem("token", response.data.token);
       
       toast.success(`Login Successful`,{duration: 2000});
  
 
-      navigate("/home");
+      navigate("/analyse");
     } catch (error) {
       setError("Google login failed");
     }
