@@ -69,7 +69,7 @@ const ProfilePage = () => {
         <div className="flex items-center gap-4">
           {/* <Avatar src="/profile-placeholder.png" alt="Profile Picture" className="w-20 h-20" /> */}
           <div>
-            <Typography variant="h4" className="font-bold">{user.firstName} Tharun Yetti{user.lastName}</Typography>
+            <Typography variant="h4" className="font-bold">{user.firstName} {user.lastName}</Typography>
             <Typography variant="body1" className="text-gray-600">{user.emailId}</Typography>
           </div>
         </div>
