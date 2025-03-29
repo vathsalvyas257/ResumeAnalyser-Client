@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Card, CardContent, Typography, CircularProgress, Button, Avatar, Chip, LinearProgress,Dialog, DialogTitle, DialogContent, DialogActions, TextField } from "@mui/material";
+import { Card, CardContent, Typography, CircularProgress, Button, Avatar, Chip, LinearProgress, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
-  const [lastResume, setLastResume] = useState(null);
+  const [lastTwoResumes, setLastTwoResumes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [firstName, setFirstName] = useState(null);
@@ -27,7 +27,7 @@ const ProfilePage = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(response.data.user);
-        setLastResume(response.data.lastResume);
+        setLastTwoResumes(response.data.lastTwoResumes || []);
       } catch (error) {
         console.error("Error fetching profile:", error.response?.data || error);
       } finally {
@@ -37,14 +37,15 @@ const ProfilePage = () => {
     fetchProfile();
   }, []);
 
-  const handleEditProfile = () =>{
+  const handleEditProfile = () => {
     setOpenEditModal(true);
-  }
+  };
 
-  const handleSaveProfile = () =>{
+  const handleSaveProfile = async () => {
+    
     try {
       const token = Cookies.get("token");
-      axios.put("http://localhost:7777/user/update-profile", { firstName, lastName }, {
+      const updated_user = await axios.put("http://localhost:7777/user/update-profile", { firstName, lastName }, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUser({ ...user, firstName, lastName });
@@ -52,7 +53,7 @@ const ProfilePage = () => {
     } catch (error) {
       console.error("Error updating profile:", error);
     }
-  }
+  };
 
   if (loading) {
     return (
@@ -73,25 +74,25 @@ const ProfilePage = () => {
             <Typography variant="body1" className="text-gray-600">{user.emailId}</Typography>
           </div>
         </div>
-        <Button variant="outlined" startIcon={<Edit />} className="text-blue-500 border-blue-500  hover:bg-blue-300" onClick={handleEditProfile}>Edit Profile</Button>
+        <Button variant="outlined" startIcon={<Edit />} className="text-blue-500 border-blue-500 hover:bg-blue-300" onClick={handleEditProfile}>Edit Profile</Button>
       </div>
 
-      {/* Resume Stats */}
-      {lastResume ? (
+      {/* Last Resume Stats */}
+      {lastTwoResumes.length > 0 && (
         <Card className="shadow-md p-4 mb-4">
           <CardContent>
             <Typography variant="h5" className="font-bold mb-2">Last Resume Stats</Typography>
-            <Typography variant="body1">Score: {lastResume.score}/100</Typography>
-            <LinearProgress variant="determinate" value={lastResume.score} className="mb-2" />
-            <Typography variant="body1">Readability: {lastResume.readabilityScore}/100</Typography>
-            <LinearProgress variant="determinate" value={lastResume.readabilityScore} className="mb-2" />
-            <Typography variant="body1">ATS Friendly: {lastResume.atsFriendly ? "Yes ✅" : "No ❌"}</Typography>
+            <Typography variant="body1">Score: {lastTwoResumes[0]?.score}/100</Typography>
+            <LinearProgress variant="determinate" value={lastTwoResumes[0]?.score} className="mb-2" />
+            <Typography variant="body1">Readability: {lastTwoResumes[0]?.readabilityScore}/100</Typography>
+            <LinearProgress variant="determinate" value={lastTwoResumes[0]?.readabilityScore} className="mb-2" />
+            <Typography variant="body1">ATS Friendly: {lastTwoResumes[0]?.atsFriendly ? "Yes ✅" : "No ❌"}</Typography>
 
-            {lastResume.missingKeywords.length > 0 && (
+            {lastTwoResumes[0]?.missingKeywords?.length > 0 && (
               <div className="mt-2">
                 <Typography variant="subtitle1" className="font-semibold">Missing Keywords:</Typography>
                 <div className="flex flex-wrap gap-2 mt-1">
-                  {lastResume.missingKeywords.map((keyword, index) => (
+                  {lastTwoResumes[0].missingKeywords.map((keyword, index) => (
                     <Chip key={index} label={keyword} color="error" />
                   ))}
                 </div>
@@ -99,13 +100,33 @@ const ProfilePage = () => {
             )}
           </CardContent>
         </Card>
-      ) : (
-        <Card className="shadow-md p-4">
-          <CardContent>
-            <Typography variant="h6" className="font-semibold">No resume uploaded yet</Typography>
-          </CardContent>
-        </Card>
       )}
+
+      {/* Last Two Resume Drive Links */}
+      <Card className="shadow-md p-4 mb-4">
+        <CardContent>
+          <Typography variant="h5" className="font-bold mb-2">Recent Resumes</Typography>
+          {lastTwoResumes.length > 0 ? (
+            lastTwoResumes.map((resume, index) => (
+              <div key={index} className="mb-2">
+                <Typography variant="body1">Resume {index + 1}:</Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className="mt-1"
+                  href={resume.file}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View Resume {index + 1}
+                </Button>
+              </div>
+            ))
+          ) : (
+            <Typography variant="body1">No resumes uploaded yet.</Typography>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Edit Profile Modal */}
       <Dialog open={openEditModal} onClose={() => setOpenEditModal(false)}>
