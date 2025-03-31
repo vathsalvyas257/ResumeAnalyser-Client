@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, UserCircle, LogOut, Settings, LogIn, User } from "lucide-react";
 import Cookies from "js-cookie"; // Import js-cookie to manage cookies
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -33,6 +34,8 @@ const Navbar = () => {
     setIsAuthenticated(false);
     setProfileOpen(false); // Close profile dropdown on logout
     navigate("/login"); // Redirect to login page
+    toast.success("Successfully logged out", {duration:2000, position:"bottom-right"});
+    
   };
 
   // Close profile dropdown when clicking outside
