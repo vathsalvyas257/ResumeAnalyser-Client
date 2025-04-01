@@ -2,11 +2,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./components/Home";
 import Body from "./components/Body";
-import SignUp from "./components/SignUp";
-import AuthForm from "./components/AuthForm";
+import AuthForm from "./components/auth/AuthForm";
 import LandingPage from "./components/LandingPage";
 import Stats from "./components/Stats";
 import ProfilePage from "./components/ProfilePage";
+import SignupForm from "./components/auth/SignupForm";
 
 function App() {
   return (
@@ -15,9 +15,9 @@ function App() {
         <Route path="/" element={<Body />}>
           <Route index element={<LandingPage />} />
           <Route path="login" element={<AuthForm />} />
-          <Route path="signup" element={<SignUp />} />
+          <Route path="signup" element={<SignupForm />} />
           <Route path="stats" element={<Stats />} />
-          <Route path="profile" element={<ProfilePage/>}/>
+          <Route path="profile" element={<ProfilePage />} />
           <Route
             path="analyse"
             element={
