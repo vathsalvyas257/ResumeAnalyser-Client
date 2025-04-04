@@ -6,6 +6,7 @@ import AuthForm from "./components/auth/AuthForm";
 import LandingPage from "./components/LandingPage";
 import Stats from "./components/Stats";
 import ProfilePage from "./components/ProfilePage";
+import AllResumes from "./components/AllResumes";
 import SignupForm from "./components/auth/SignupForm";
 import Home from "./pages/HomePage";
 
@@ -28,6 +29,7 @@ function App() {
             }
           />
         </Route>
+        <Route path="allresumes" element={<AllResumes />}></Route>
       </Routes>
     </BrowserRouter>
   );
