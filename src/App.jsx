@@ -30,6 +30,7 @@ function App() {
             }
           />
         </Route>
+        <Route path="allresumes" element={<AllResumes />}></Route>
       </Routes>
     </BrowserRouter>
   );
