@@ -4,6 +4,7 @@ import { UploadCloud, FileText, ArrowRight, XCircle, CheckCircle } from "lucide-
 import axios from "axios";
 import Cookies from "js-cookie";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { toast } from 'react-hot-toast';
 
 const Home = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -52,7 +53,8 @@ const Home = () => {
   // 🚀 API Call to Send Resume
   const handleAnalyzeResume = async () => {
     if (!selectedFile) {
-      alert("Please select a resume first!");
+      // alert("Please select a resume first!");
+      toast.error("Please select a resume first!", {duration:2000, position:"bottom-right"});
       return;
     }
 
@@ -64,7 +66,8 @@ const Home = () => {
       console.log("token")
       console.log(token) 
       if (!token) {
-        alert("User not authenticated. Please log in again.");
+        // alert("User not authenticated. Please log in again.");
+        toast.error(`User not authenticated. Please log in.`, {duration:2000, position:"bottom-right"});
         return;
       }
       // console.log(token); // working
@@ -75,7 +78,7 @@ const Home = () => {
       console.log(selectedFile); // working
       // Send to backend
 
-      const response = await axios.post("http://localhost:7777/resume/analyze", formData, {
+      const response = await axios.post("http://localhost:7777/resume/analyse", formData, {
         headers: {
           Authorization: `Bearer ${token}`, // Pass the token
           "Content-Type": "multipart/form-data",
@@ -85,7 +88,8 @@ const Home = () => {
       
       // Set the received response
       setResult(response.data.resume);
-      alert("Resume analysis successful!");
+      toast.success(`${response.data.message}`, {duration:2000, position:"bottom-right"});
+      // alert(response.data.message);
     
 
        // ✅ Fix: Define data inside useState
@@ -99,7 +103,8 @@ const Home = () => {
       setDisplay(true);
     } catch (error) {
       console.error("Error analyzing resume:", error);
-      alert("Failed to analyze resume.");
+      // alert("Failed to analyze resume.");
+      toast.error("Failed to analyze the resume", {duration:2000, position:"bottom-right"});
     } finally {
       setLoading(false);
     }
