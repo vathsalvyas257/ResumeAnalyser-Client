@@ -88,7 +88,7 @@ const Home = () => {
         </div>
       </div>
       {/* Call to Action Section */}
-      <div className="w-full mt-5 ml-15 flex flex-col md:flex-row items-center px-6 md:px-10">
+      <div className="w-full mt-5 ml-1 md:ml-10 flex flex-col md:flex-row items-center md:px-10">
         <div className="w-full md:w-1/2 text-center md:text-left">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-medium">
             Don't Just Submit <br /> Stand Out!
