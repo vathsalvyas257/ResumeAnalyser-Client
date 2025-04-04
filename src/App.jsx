@@ -24,7 +24,7 @@ function App() {
             path="analyse"
             element={
               <ProtectedRoute>
-                <Home />
+                <LandingPage />
               </ProtectedRoute>
             }
           />

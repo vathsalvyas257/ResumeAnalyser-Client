@@ -1,22 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState("");
+  const navigate = useNavigate();
 
   // Check if JWT token is present in localStorage
   useEffect(() => {
-    const token = Cookies.get("token");
+    setToken(Cookies.get("token"));
+    console.log(token);
     localStorage.setItem("token", token);
     // const token = localStorage.getItem("token"); // JWT token stored
     setIsLoggedIn(!!token); // Convert token existence to boolean
-  }, []);
+  }, [token]);
+
+  const handleLogout = ()=>{
+    Cookies.remove("token");
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    navigate("/");
+  }
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-transparent backdrop-blur-md px-6 py-4 z-50">
+    <nav className="fixed top-0 left-0 w-full bg-transparent backdrop-blur-md px-6 z-50">
       <div className="flex justify-between items-center h-[80px]">
         {/* Left - Logo */}
         <div className="ml-4">
@@ -42,12 +52,15 @@ const Navbar = () => {
         {/* Right - Buttons (Hidden on Mobile) */}
         {isLoggedIn ? (
           <div className="hidden md:flex items-center gap-7">
-            <Link to="/profile" className="text-xl font-medium cursor-pointer">
+            <Link to="/profile" className="text-xl font-medium cursor-pointer hover:text-[#7F56D9]">
               Profile
             </Link>
-            <Link to="/logout" className="text-xl font-medium cursor-pointer">
-              Log out
-            </Link>
+            <button
+                  className="block w-full text-xl px-4 py-2 hover:text-red-600 font-medium flex items-center gap-2 cursor-pointer"
+                  onClick={handleLogout}
+              >
+                  Logout
+              </button>
           </div>
         ) : (
           <div className="hidden md:flex items-center gap-7">

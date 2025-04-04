@@ -24,7 +24,7 @@ const features = [
 
 const Home = () => {
   return (
-    <div className="w-full px-6 py-12 overflow-x-hidden">
+    <div className="w-full px-6 -mt-6 overflow-x-hidden">
       {/* Hero Section */}
       <div className=" flex flex-col md:flex-row items-center justify-between p-8 rounded-lg shadow-2xl backdrop-blur-3xl bg-white">
         {/* Left Side (Text) */}
