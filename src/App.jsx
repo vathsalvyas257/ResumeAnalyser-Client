@@ -1,15 +1,26 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
+import AllResumes from "./components/AllResumes";
 import AuthForm from "./components/auth/AuthForm";
 // import Home from "./components/Home";
 import Body from "./components/Body";
 import Home from "./pages/HomePage";
-import LandingPage from "./components/LandingPage";
 import ProfilePage from "./components/ProfilePage";
-import ProtectedRoute from "./components/ProtectedRoute";
 import ResumeAnalysisResults from "./components/ResumeAnalysisResults";
 import SignupForm from "./components/auth/SignupForm";
 import Stats from "./components/Stats";
+
+const scores = {
+  overall: 78.6,
+  categories: [
+    { label: "ATS Compatibility", value: 90.2 },
+    { label: "Improved Keywords", value: 29.3 },
+    { label: "Content Quality", value: 95.3 },
+    { label: "Structure & Formatting", value: 38.9 },
+    { label: "Grammar & Spelling", value: 85.0 },
+  ],
+};
+
 
 function App() {
   return (
@@ -25,7 +36,7 @@ function App() {
             path="analyzer"
             element={
               <>
-                <ResumeAnalysisResults />
+                <ResumeAnalysisResults scores={scores}/>
               </>
             }
           />

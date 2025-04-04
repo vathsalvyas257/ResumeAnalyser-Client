@@ -1,51 +1,54 @@
+import "react-circular-progressbar/dist/styles.css";
 import "../styles/ResumeAnalysisResults.css";
+
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 
 import React from "react";
 
-const ResumeAnalysisResults = () => {
-  const performanceMetrics = [
-    { label: "ATS Compatibility", score: 55.2, color: "#f4a261" },
-    { label: "Keyword Optimization", score: 89.3, color: "#2a9d8f" },
-    { label: "Content Quality", score: 95.3, color: "#4caf50" },
-    { label: "Structure & Formatting", score: 38.9, color: "#e63946" },
-  ];
-
+const ResumeAnalyzer = ({ scores }) => {
   return (
-    <div className="resume-analysis-container">
-      {/* Title Section */}
-      <div className="title-section">
-        <h2>Resume Analysis Results</h2>
+    <div className="resume-analyzer">
+      <div className="score-section">
+        <h3>Resume Analysis Results</h3>
         <p>Your resume score and insights</p>
-      </div>
-
-      {/* Main Resume Score */}
-      <div className="main-score">
-        <div className="progress-circle large" style={{ "--percentage": 78.6, "--color": "#007bff" }}>
-          <div className="progress-background"></div>
-          <div className="progress-fill"></div>
-          <span className="progress-text">78.6%</span>
+        <div className="main-score">
+          <CircularProgressbar
+            value={scores.overall}
+            text={`${scores.overall}%`}
+            styles={buildStyles({
+              textColor: "#2c6791	",
+              // pathColor: `rgba(62, 122, 189, ${scores.overall / 100})`
+              pathColor: "#2b7fb8	",
+              trailColor: "#d6d6d6",
+              strokeLinecap: 'butt',
+              textSize: '16px',
+              pathTransitionDuration: 0.5,
+            })}
+          />
         </div>
       </div>
 
-      {/* Overall Performance Section */}
-      <h3>Overall Performance</h3>
-      <div className="performance-metrics">
-        {performanceMetrics.map((metric, index) => (
-          <div key={index} className="metric">
-            <div 
-              className="progress-circle small" 
-              style={{ "--percentage": metric.score, "--color": metric.color }}
-            >
-              <div className="progress-background"></div>
-              <div className="progress-fill"></div>
-              <span className="progress-text">{metric.score}%</span>
+      <div className="performance-section">
+        <h4>Overall Performance</h4>
+        <div className="metrics">
+          {scores.categories.map((category, index) => (
+            <div className="metric" key={index}>
+              <CircularProgressbar
+                value={category.value}
+                text={`${category.value}%`}
+                styles={buildStyles({
+                  textColor: category.value > 50 ? "#4CAF50" : "#FF5733",
+                  pathColor: category.value > 50 ? "#4CAF50" : "#FF5733",
+                  trailColor: "#d6d6d6",
+                })}
+              />
+              <p>{category.label}</p>
             </div>
-            <p>{metric.label}</p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
 };
 
-export default ResumeAnalysisResults;
+export default ResumeAnalyzer;
