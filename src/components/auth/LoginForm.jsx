@@ -33,6 +33,7 @@ const LoginForm = () => {
       });
 
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user",response.data.user);
       toast.success("Login Successful!", {
         duration: 2000,
         position: "bottom-right",
