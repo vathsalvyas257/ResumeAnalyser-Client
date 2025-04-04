@@ -1,0 +1,101 @@
+/* Resume Analysis Box */
+.resume-analysis-container {
+  background: #e3f2fd; /* Light blue */
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 400px;
+}
+
+/* Title Section */
+.title-section {
+  padding-bottom: 30px;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+p {
+  font-size: 16px;
+  color: #333;
+}
+
+/* Main Resume Score */
+.main-score {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Circular Progress */
+.progress-circle {
+  position: relative;
+  width: var(--size, 150px);
+  height: var(--size, 150px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Background ring */
+.progress-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 12px solid rgba(var(--color-rgb), 0.2); /* Transparent background */
+}
+
+/* Progress fill */
+.progress-fill {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 12px solid var(--color);
+  clip-path: polygon(50% 50%, 0% 0%, 100% 0%);
+  transform: rotate(calc(var(--percentage) * 3.6deg));
+}
+
+/* Percentage Text */
+.progress-text {
+  font-size: 22px;
+  font-weight: bold;
+  position: absolute;
+  color: black;
+}
+
+/* Large Circle */
+.large {
+  --size: 150px;
+}
+
+/* Small Circles */
+.small {
+  --size: 80px;
+  font-size: 14px;
+}
+
+/* Overall Performance Metrics */
+.performance-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.metric {
+  text-align: center;
+  width: 110px;
+}
+
+.metric p {
+  font-size: 14px;
+  margin-top: 5px;
+}

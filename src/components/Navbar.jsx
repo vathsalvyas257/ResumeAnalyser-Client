@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import React, { useEffect, useState } from "react";
+
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
@@ -25,7 +26,7 @@ const Navbar = () => {
           <Link to="/" className="hover:text-[#7F56D9] cursor-pointer">
             Home
           </Link>
-          <Link to="/analyser" className="hover:text-[#7F56D9] cursor-pointer">
+          <Link to="/analyzer" className="hover:text-[#7F56D9] cursor-pointer">
             Analyser
           </Link>
           <Link to="/about" className="hover:text-[#7F56D9] cursor-pointer">
@@ -52,7 +53,7 @@ const Navbar = () => {
               Log in
             </Link>
             <Link
-              to="/signup"
+              to="/login"
               className="text-xl font-medium text-white bg-[#7F56D9] py-3 px-5 rounded-xl cursor-pointer hover:bg-[#6B47C6]"
             >
               Sign up

@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import GoogleOAuth from "./GoogleOAuth";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
-import GoogleOAuth from "./GoogleOAuth";
+import { motion } from "framer-motion";
+import { useState } from "react";
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -19,7 +19,7 @@ const AuthForm = () => {
           <button
             className={`text-lg font-semibold flex-1 p-2 transition-all ${
               isLogin
-                ? "border-b-4 border-[#0077B6] text-[#0077B6]"
+                ? "border-b-4 border-[#0077B6] text-[#0077A6]"
                 : "text-gray-500"
             }`}
             onClick={() => setIsLogin(true)}

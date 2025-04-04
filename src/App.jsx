@@ -1,13 +1,15 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import ProtectedRoute from "./components/ProtectedRoute";
+
+import AuthForm from "./components/auth/AuthForm";
 // import Home from "./components/Home";
 import Body from "./components/Body";
-import AuthForm from "./components/auth/AuthForm";
-import LandingPage from "./components/LandingPage";
-import Stats from "./components/Stats";
-import ProfilePage from "./components/ProfilePage";
-import SignupForm from "./components/auth/SignupForm";
 import Home from "./pages/HomePage";
+import LandingPage from "./components/LandingPage";
+import ProfilePage from "./components/ProfilePage";
+import ProtectedRoute from "./components/ProtectedRoute";
+import ResumeAnalysisResults from "./components/ResumeAnalysisResults";
+import SignupForm from "./components/auth/SignupForm";
+import Stats from "./components/Stats";
 
 function App() {
   return (
@@ -20,11 +22,11 @@ function App() {
           <Route path="stats" element={<Stats />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route
-            path="analyse"
+            path="analyzer"
             element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
+              <>
+                <ResumeAnalysisResults />
+              </>
             }
           />
         </Route>
