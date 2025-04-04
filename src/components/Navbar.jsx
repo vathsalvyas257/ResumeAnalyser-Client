@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -8,7 +9,9 @@ const Navbar = () => {
 
   // Check if JWT token is present in localStorage
   useEffect(() => {
-    const token = localStorage.getItem("token"); // JWT token stored
+    const token = Cookies.get("token");
+    localStorage.setItem("token", token);
+    // const token = localStorage.getItem("token"); // JWT token stored
     setIsLoggedIn(!!token); // Convert token existence to boolean
   }, []);
 

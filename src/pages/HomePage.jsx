@@ -24,7 +24,7 @@ const features = [
 
 const Home = () => {
   return (
-    <div className="w-full px-6 py-12">
+    <div className="w-full px-6 py-12 overflow-x-hidden">
       {/* Hero Section */}
       <div className=" flex flex-col md:flex-row items-center justify-between p-8 rounded-lg shadow-2xl backdrop-blur-3xl bg-white">
         {/* Left Side (Text) */}
@@ -38,7 +38,7 @@ const Home = () => {
             supercharges your resume with AI-powered analysis, ensuring it’s
             ATS-friendly, optimized, and interview-ready in seconds.
           </p>
-          <button className="bg-[#7F56D9] py-3 px-6 rounded-xl text-xl text-white font-semibold mx-auto md:mx-0 transition-all duration-300 hover:bg-[#6A45C8] w-[40%]">
+          <button className="bg-[#7F56D9] py-3 px-6 rounded-xl text-xl text-white font-semibold mx-auto md:mx-0 transition-all duration-300 hover:bg-[#6A45C8] w-[60%]">
             Upload your Resume Now 💪
           </button>
         </div>
@@ -65,7 +65,7 @@ const Home = () => {
               key={index}
               className="bg-white shadow-lg rounded-2xl p-6 flex flex-col items-center text-center transition-all duration-300 hover:shadow-2xl"
             >
-              <div className="bg-[#f5a2f5] p-5 rounded-2xl text-xl font-bold">
+              <div className="bg-[#7F56D9] p-5 rounded-2xl text-xl font-bold text-white shadow-lg">
                 {feature.icon}
               </div>
               <h2 className="text-2xl font-semibold mt-4">{feature.title}</h2>
@@ -83,20 +83,17 @@ const Home = () => {
           <img
             src="images/guide.png"
             alt="Guide"
-            className="w-full sm:w-3/4 md:w-1/2"
+            className="w-full sm:w-3/4 md:w-3/4"
           />
         </div>
       </div>
       {/* Call to Action Section */}
       <div className="w-full mt-5 ml-15 flex flex-col md:flex-row items-center px-6 md:px-10">
         <div className="w-full md:w-1/2 text-center md:text-left">
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-medium">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-medium">
             Don't Just Submit <br /> Stand Out!
           </h1>
           <div className="mt-10 flex flex-col gap-4 text-xl sm:text-2xl text-[#7F56D9]">
-            <p className="flex gap-2 items-center">
-              <CircleCheckBig color="#7F56D9" /> Instant analysis
-            </p>
             <p className="flex gap-2 items-center">
               <CircleCheckBig color="#7F56D9" /> AI powered Resume Analyser
             </p>
