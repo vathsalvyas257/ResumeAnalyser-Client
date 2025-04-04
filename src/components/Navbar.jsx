@@ -41,11 +41,11 @@ const Navbar = () => {
           <Link to="/analyser" className="hover:text-[#7F56D9] cursor-pointer">
             Analyser
           </Link>
+          <Link to="/stats" className="hover:text-[#7F56D9] cursor-pointer">
+            Stats
+          </Link>
           <Link to="/about" className="hover:text-[#7F56D9] cursor-pointer">
             About
-          </Link>
-          <Link to="/contact" className="hover:text-[#7F56D9] cursor-pointer">
-            Contact
           </Link>
         </div>
 
@@ -68,7 +68,7 @@ const Navbar = () => {
               Log in
             </Link>
             <Link
-              to="/signup"
+              to="/login"
               className="text-xl font-medium text-white bg-[#7F56D9] py-3 px-5 rounded-xl cursor-pointer hover:bg-[#6B47C6]"
             >
               Sign up
