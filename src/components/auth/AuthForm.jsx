@@ -8,7 +8,7 @@ const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#03045E] to-[#0077B6] px-4">
+    <div className="min-h-screen flex items-center justify-center bg-white mt-[-100px] px-4">
       <motion.div
         className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md"
         initial={{ opacity: 0, y: -30 }}
@@ -19,7 +19,7 @@ const AuthForm = () => {
           <button
             className={`text-lg font-semibold flex-1 p-2 transition-all ${
               isLogin
-                ? "border-b-4 border-[#0077B6] text-[#0077A6]"
+                ? "border-b-4 border-[#0077B6] text-[#7F56D9]"
                 : "text-gray-500"
             }`}
             onClick={() => setIsLogin(true)}
@@ -29,7 +29,7 @@ const AuthForm = () => {
           <button
             className={`text-lg font-semibold flex-1 p-2 transition-all ${
               !isLogin
-                ? "border-b-4 border-[#0077B6] text-[#0077B6]"
+                ? "border-b-4 border-[#0077B6] text-[#7F56D9]"
                 : "text-gray-500"
             }`}
             onClick={() => setIsLogin(false)}

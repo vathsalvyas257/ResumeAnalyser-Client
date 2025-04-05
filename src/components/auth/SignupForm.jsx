@@ -1,22 +1,19 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { Mail, Lock, User } from "lucide-react";
-import { motion } from "framer-motion";
-import LoginForm from "./LoginForm";
 
 const SignupForm = () => {
-  console.log("SignupForm");
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     emailId: "",
     password: "",
+    confirmPassword: "",
   });
+
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [success, setSuccess] = useState(false);
   const API_URL = "http://localhost:7777"; // Replace with your backend URL
 
   const handleInputChange = (e) => {
@@ -26,18 +23,37 @@ const SignupForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
+    setSuccess(false);
+
+    const { firstName, emailId, password, confirmPassword } = formData;
+
+    // Validation
+    if (!firstName || !emailId || !password || !confirmPassword) {
+      toast.error("Please fill all the fields");
+      setLoading(false);
+      return;
+    }
+
+    if (
+      password.length < 6 ||
+      !/\d/.test(password) ||
+      !/[A-Z]/.test(password) ||
+      !/[!@#$%^&*]/.test(password)
+    ) {
+      toast.error(
+        "Password must be at least 6 characters long and include a capital letter, number, and special character"
+      );
+      setLoading(false);
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      setLoading(false);
+      return;
+    }
 
     try {
-      if (
-        formData.firstName === "" ||
-        formData.emailId === "" ||
-        formData.password === ""
-      ) {
-        setError("Please fill all the fields");
-        setLoading(false);
-        return;
-      }
       const response = await axios.post(`${API_URL}/signup`, formData, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
@@ -49,9 +65,17 @@ const SignupForm = () => {
         duration: 2000,
         position: "bottom-right",
       });
-      navigate("/analyse");
+
+      setSuccess(true);
+      setFormData({
+        firstName: "",
+        lastName: "",
+        emailId: "",
+        password: "",
+        confirmPassword: "",
+      });
     } catch (err) {
-      setError(err.response?.data || "Something went wrong");
+      toast.error(err.response?.data || "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -59,6 +83,12 @@ const SignupForm = () => {
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit}>
+      {success && (
+        <div className="text-green-600 text-center font-semibold">
+          Signup successful!
+        </div>
+      )}
+
       <div className="relative">
         <User className="absolute left-3 top-3 text-gray-400" size={20} />
         <input
@@ -71,6 +101,7 @@ const SignupForm = () => {
           required
         />
       </div>
+
       <div className="relative">
         <User className="absolute left-3 top-3 text-gray-400" size={20} />
         <input
@@ -82,7 +113,55 @@ const SignupForm = () => {
           onChange={handleInputChange}
         />
       </div>
-      <LoginForm />
+
+      <div className="relative">
+        <Mail className="absolute left-3 top-3 text-gray-400" size={20} />
+        <input
+          type="email"
+          name="emailId"
+          placeholder="Email"
+          className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#0077B6]"
+          value={formData.emailId}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
+
+      <div className="relative">
+        <Lock className="absolute left-3 top-3 text-gray-400" size={20} />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#0077B6]"
+          value={formData.password}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
+
+      <div className="relative">
+        <Lock className="absolute left-3 top-3 text-gray-400" size={20} />
+        <input
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirm Password"
+          className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#0077B6]"
+          value={formData.confirmPassword}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
+
+      <button
+        type="submit"
+        disabled={loading}
+        className={`w-full bg-[#7F56D9] text-white p-3 rounded-lg ${
+          loading ? "opacity-50 cursor-not-allowed" : ""
+        }`}
+      >
+        {loading ? "Signing up..." : "Sign Up"}
+      </button>
     </form>
   );
 };
