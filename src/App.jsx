@@ -28,8 +28,14 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route 
+          path="allresumes" 
+          element={
+            <ProtectedRoute>
+              <AllResumes />
+            </ProtectedRoute>
+          }/>
         </Route>
-        <Route path="allresumes" element={<AllResumes />}></Route>
       </Routes>
     </BrowserRouter>
   );
