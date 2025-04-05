@@ -33,13 +33,9 @@ function App() {
           <Route
             path="analyzer"
             element={
-            
-                <ResumeAnalysisResults scores={scores}/>
-
               <ProtectedRoute allowedRoles={['admin', 'user']}>
                 <LandingPage />
               </ProtectedRoute>
-
             }
           />
           <Route 
