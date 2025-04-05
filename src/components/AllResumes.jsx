@@ -1,14 +1,4 @@
 import React, { useEffect, useState } from "react";
-import {
-  Card,
-  CardContent,
-  Typography,
-  CircularProgress,
-  Button,
-  Pagination,
-  Grid,
-  Divider,
-} from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -47,96 +37,106 @@ const AllResumes = () => {
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
   if (loading)
-    return <CircularProgress sx={{ display: "flex", margin: "auto", mt: 10 }} />;
+    return <div className="flex justify-center mt-10"><div className="loader">Loading...</div></div>;
+
   if (error)
     return (
-      <Typography color="error" align="center" sx={{ mt: 10 }}>
-        {error}
-      </Typography>
+      <p className="text-red-600 text-center mt-10 font-semibold">{error}</p>
     );
 
   return (
-    <div style={{ padding: "2rem", backgroundColor: "#EEF2FF", minHeight: "100vh" }}>
-      <Typography variant="h4" align="center" sx={{ mb: 4, fontWeight: "bold" }}>
-        Users & Their Resumes
-      </Typography>
+    <div className="p-8 min-h-screen bg-gray-50">
+      <h2 className="text-3xl font-bold text-center mb-8 font-sans">Users & Their Resumes</h2>
 
-      <Grid container spacing={4}>
+      <div className="grid grid-cols-1 gap-6">
         {currentUsers.map((user) => (
-          <Grid item xs={12} key={user.email}>
-            <Card
-              sx={{
-                borderRadius: "12px",
-                padding: "1rem",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
-              }}
-            >
-              <CardContent>
-                <Typography variant="h6" sx={{ fontWeight: "bold", color: "#4F46E5" }}>
-                  {user.name}
-                </Typography>
-                <Typography variant="body2" sx={{ color: "#6B7280" }}>
-                  {user.email}
-                </Typography>
+          <div key={user.email} className="bg-white p-6 rounded-xl shadow-md">
+            <h3 className="text-xl font-bold text-indigo-600">{user.name}</h3>
+            <p className="text-gray-600">{user.email}</p>
 
-                <Divider sx={{ my: 2 }} />
+            <div className="my-4 border-t border-gray-200" />
 
-                {user.lastTwoResumeLinks?.length > 0 ? (
-                  
-                  user.lastTwoResumeLinks?.map((resume, index) => (
-                  <div key={resume.id} style={{ marginBottom: "1.5rem" }}>
-                    <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                      Resume {index + 1}
-                    </Typography>
-                    <Typography variant="body2">
-                      Score: {resume.score}/100 | Readability:{" "}
-                      {resume.readabilityScore}/100
-                    </Typography>
-                    <Typography variant="body2">
-                      ATS Friendly:{" "}
-                      {resume.atsFriendly ? (
-                        <span style={{ color: "#10B981" }}>✅ Yes</span>
-                      ) : (
-                        <span style={{ color: "#EF4444" }}>❌ No</span>
-                      )}
-                    </Typography>
-                    {resume ? (
-                      <Button
-                        variant="contained"
-                        size="small"
-                        href={resume}
-                        target="_blank"
-                        sx={{
-                          mt: 1,
-                          backgroundColor: "#4F46E5",
-                          "&:hover": { backgroundColor: "#4338CA" },
-                        }}
-                      >
-                        Open Resume
-                      </Button>
+            {user.lastTwoResumeLinks?.length > 0 ? (
+              user.lastTwoResumeLinks.map((resume, index) => (
+                <div key={resume.id} className="mb-6">
+                  <h4 className="font-semibold text-gray-800">Resume {index + 1}</h4>
+                  <p className="text-sm text-gray-600">
+                    Score: {resume.score}/100 | Readability: {resume.readabilityScore}/100
+                  </p>
+                  <p className="text-sm">
+                    ATS Friendly:{" "}
+                    {resume.atsFriendly ? (
+                      <span className="text-green-600 font-semibold">✅ Yes</span>
                     ) : (
-                      <Typography variant="caption" color="text.secondary">
-                        No File Uploaded.
-                      </Typography>
+                      <span className="text-red-500 font-semibold">❌ No</span>
                     )}
-                  </div>
-                ))) : (
-                  <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                    No resumes uploaded yet.
-                  </Typography>
-                )}
-              </CardContent>
-            </Card>
-          </Grid>
+                  </p>
+                  {resume ? (
+                    <a
+                      href={resume}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block mt-2 px-4 py-1 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm"
+                    >
+                      Open Resume
+                    </a>
+                  ) : (
+                    <p className="text-gray-400 text-sm mt-2">No File Uploaded.</p>
+                  )}
+                </div>
+              ))
+            ) : (
+              <p className="text-sm text-gray-500">No resumes uploaded yet.</p>
+            )}
+          </div>
         ))}
-      </Grid>
+      </div>
 
-      <Pagination
-        count={Math.ceil(users.length / usersPerPage)}
-        page={page}
-        onChange={(e, val) => setPage(val)}
-        sx={{ display: "flex", justifyContent: "center", mt: 4 }}
-      />
+      {/* Pagination */}
+      <div className="flex justify-center items-center mt-8 space-x-2">
+        <button
+          className={`px-3 py-1 rounded-md ${
+            page === 1
+              ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+              : "bg-indigo-600 text-white hover:bg-indigo-700"
+          }`}
+          onClick={() => page > 1 && setPage(page - 1)}
+          disabled={page === 1}
+        >
+          &laquo; Prev
+        </button>
+
+        {[...Array(Math.ceil(users.length / usersPerPage)).keys()].map((num) => {
+          const pg = num + 1;
+          return (
+            <button
+              key={pg}
+              className={`px-3 py-1 rounded-md ${
+                page === pg
+                  ? "bg-indigo-700 text-white font-semibold"
+                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+              }`}
+              onClick={() => setPage(pg)}
+            >
+              {pg}
+            </button>
+          );
+        })}
+
+        <button
+          className={`px-3 py-1 rounded-md ${
+            page === Math.ceil(users.length / usersPerPage)
+              ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+              : "bg-indigo-600 text-white hover:bg-indigo-700"
+          }`}
+          onClick={() =>
+            page < Math.ceil(users.length / usersPerPage) && setPage(page + 1)
+          }
+          disabled={page === Math.ceil(users.length / usersPerPage)}
+        >
+          Next &raquo;
+        </button>
+      </div>
     </div>
   );
 };
