@@ -2,10 +2,13 @@ import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { toast } from "react-hot-toast";
+import { login } from "../../redux/userSlice";
 
 const GoogleOAuth = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const API_URL = "http://localhost:7777";
 
   const handleGoogleLogin = async (details) => {
@@ -17,7 +20,10 @@ const GoogleOAuth = () => {
           withCredentials: true,
         }
     );
-      localStorage.setItem("token", response.data.token);
+    const { token, user } = response.data;
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+      dispatch(login({ token, user }));
       toast.success("Login Successful!", {
         duration: 2000,
         position: "bottom-right",

@@ -33,13 +33,23 @@ function App() {
           <Route
             path="analyzer"
             element={
-              <>
+            
                 <ResumeAnalysisResults scores={scores}/>
-              </>
+
+              <ProtectedRoute allowedRoles={['admin', 'user']}>
+                <LandingPage />
+              </ProtectedRoute>
+
             }
           />
+          <Route 
+          path="allresumes" 
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AllResumes />
+            </ProtectedRoute>
+          }/>
         </Route>
-        <Route path="allresumes" element={<AllResumes />}></Route>
       </Routes>
     </BrowserRouter>
   );

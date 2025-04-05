@@ -12,6 +12,7 @@ const ProfilePage = () => {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
+  const [role, setRole] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,6 +28,9 @@ const ProfilePage = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(response.data.user);
+        // user.role == "admin" ? setIsAdmin(true) : null ;
+        // console.log(isAdmin);
+        setRole(response.data.user.role);
         setLastTwoResumes(response.data.lastTwoResumes || []);
       } catch (error) {
         console.error("Error fetching profile:", error.response?.data || error);
@@ -40,6 +44,9 @@ const ProfilePage = () => {
   const handleEditProfile = () => {
     setOpenEditModal(true);
   };
+  const handleViewAllResumes = () =>{
+    navigate("/allResumes");
+  }
 
   const handleSaveProfile = async () => {
     
@@ -74,6 +81,10 @@ const ProfilePage = () => {
             <Typography variant="body1" className="text-gray-600">{user.emailId}</Typography>
           </div>
         </div>
+       { role == "admin"  && (
+          <Button variant="outlined" startIcon={<Edit />} className="text-green-500 border-red-500 hover:bg-red-300" onClick={handleViewAllResumes}>View All Resumes</Button>
+        )
+       }
         <Button variant="outlined" startIcon={<Edit />} className="text-blue-500 border-blue-500 hover:bg-blue-300" onClick={handleEditProfile}>Edit Profile</Button>
       </div>
 
@@ -136,7 +147,9 @@ const ProfilePage = () => {
           <TextField fullWidth label="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} margin="normal" />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenEditModal(false)} color="secondary">Cancel</Button>
+          (isAdmin &&  {
+            <Button onClick={() => setOpenEditModal(false)} color="secondary">Cancel</Button>
+          })
           <Button onClick={handleSaveProfile} color="primary" variant="contained">Save</Button>
         </DialogActions>
       </Dialog>

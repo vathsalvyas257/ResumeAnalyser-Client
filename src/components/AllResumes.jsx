@@ -1,24 +1,16 @@
-import React, { useState, useEffect } from "react";
-import {
-  Card,
-  CardContent,
-  Typography,
-  CircularProgress,
-  Button,
-  Pagination,
-} from "@mui/material";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 
 const AllResumes = () => {
-  const [resumes, setResumes] = useState([]);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
-  const resumesPerPage = 8;
+  const usersPerPage = 5;
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchResumes = async () => {
+    const fetchUsers = async () => {
       const token = Cookies.get("token");
       if (!token) {
         setError("Token is missing");
@@ -29,374 +21,124 @@ const AllResumes = () => {
         const response = await axios.get("http://localhost:7777/resume/all", {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setResumes(response.data.resumes || []);
+        setUsers(response.data || []);
       } catch (err) {
-        console.error("Error fetching resumes:", err);
-        setError("Failed to load resumes");
+        console.error("Error:", err);
+        setError("Failed to load users and resumes");
       } finally {
         setLoading(false);
       }
     };
-    fetchResumes();
+    fetchUsers();
   }, []);
 
+  const indexOfLastUser = page * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+
   if (loading)
-    return (
-      <CircularProgress
-        sx={{ display: "flex", justifyContent: "center", marginTop: 10 }}
-      />
-    );
+    return <div className="flex justify-center mt-10"><div className="loader">Loading...</div></div>;
+
   if (error)
     return (
-      <Typography color="error" sx={{ marginTop: 10, textAlign: "center" }}>
-        {error}
-      </Typography>
+      <p className="text-red-600 text-center mt-10 font-semibold">{error}</p>
     );
 
-  // Pagination Logic
-  const indexOfLastResume = page * resumesPerPage;
-  const indexOfFirstResume = indexOfLastResume - resumesPerPage;
-  const currentResumes = resumes.slice(indexOfFirstResume, indexOfLastResume);
-
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "2rem",
-        background: "rgba(99, 102, 241, 0.9)", // Indigo glassmorphism effect
-        backdropFilter: "blur(10px)",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
-        borderRadius: "12px",
-        color: "#fff",
-      }}
-    >
-      <Typography
-        variant="h4"
-        sx={{
-          fontWeight: "bold",
-          textAlign: "center",
-          marginBottom: "1.5rem",
-          color: "#ffffff",
-        }}
-      >
-        All Resumes
-      </Typography>
+    <div className="p-8 min-h-screen bg-gray-50">
+      <h2 className="text-3xl font-bold text-center mb-8 font-sans">Users & Their Resumes</h2>
 
-      {currentResumes.length > 0 ? (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gap: "1.5rem",
-            width: "100%",
-            maxWidth: "80rem",
-          }}
-        >
-          {currentResumes.map((resume) => (
-            <Card
-              key={resume.id}
-              sx={{
-                background: "rgba(255, 255, 255, 0.7)", // Glassmorphism effect
-                boxShadow: "0 6px 12px rgba(0,0,0,0.2)",
-                borderRadius: "10px",
-                padding: "1rem",
-                transition: "all 0.3s ease-in-out",
-                backdropFilter: "blur(10px)",
-                "&:hover": {
-                  transform: "scale(1.05)",
-                  background: "rgba(255, 255, 255, 0.9)",
-                  boxShadow: "0 8px 16px rgba(0,0,0,0.9)",
-                },
-              }}
-            >
-              <CardContent>
-                <Typography
-                  variant="h5"
-                  sx={{ fontWeight: "bold", color: "#4F46E5" }}
-                >
-                  {resume.userName}
-                </Typography>
-                <Typography variant="body1" sx={{ color: "#374151" }}>
-                  Score: {resume.score}/100
-                </Typography>
-                <Typography variant="body1" sx={{ color: "#374151" }}>
-                  Readability: {resume.readabilityScore}/100
-                </Typography>
-                <Typography variant="body1" sx={{ color: "#374151" }}>
-                  ATS Friendly:{" "}
-                  {resume.atsFriendly ? (
-                    <span style={{ color: "#10B981" }}>✅ Yes</span>
+      <div className="grid grid-cols-1 gap-6">
+        {currentUsers.map((user) => (
+          <div key={user.email} className="bg-white p-6 rounded-xl shadow-md">
+            <h3 className="text-xl font-bold text-indigo-600">{user.name}</h3>
+            <p className="text-gray-600">{user.email}</p>
+
+            <div className="my-4 border-t border-gray-200" />
+
+            {user.lastTwoResumeLinks?.length > 0 ? (
+              user.lastTwoResumeLinks.map((resume, index) => (
+                <div key={resume.id} className="mb-6">
+                  <h4 className="font-semibold text-gray-800">Resume {index + 1}</h4>
+                  <p className="text-sm text-gray-600">
+                    Score: {resume.score}/100 | Readability: {resume.readabilityScore}/100
+                  </p>
+                  <p className="text-sm">
+                    ATS Friendly:{" "}
+                    {resume.atsFriendly ? (
+                      <span className="text-green-600 font-semibold">✅ Yes</span>
+                    ) : (
+                      <span className="text-red-500 font-semibold">❌ No</span>
+                    )}
+                  </p>
+                  {resume ? (
+                    <a
+                      href={resume}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block mt-2 px-4 py-1 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm"
+                    >
+                      Open Resume
+                    </a>
                   ) : (
-                    <span style={{ color: "#EF4444" }}>❌ No</span>
+                    <p className="text-gray-400 text-sm mt-2">No File Uploaded.</p>
                   )}
-                </Typography>
-                {resume.file ? (
-                  <Button
-                    variant="contained"
-                    sx={{
-                      marginTop: "0.5rem",
-                      backgroundColor: "#ffffff",
-                      color: "#4F46E5",
-                      fontWeight: "bold",
-                      "&:hover": { backgroundColor: "#E0E7FF" },
-                    }}
-                    onClick={() => {
-                      const fileURL = `data:application/pdf;base64,${resume.file}`;
-                      const newTab = window.open();
-                      newTab.document.write(`
-                        <iframe src="${fileURL}" width="100%" height="100%" style="border:none;"></iframe>
-                      `);
-                      newTab.document.title = `Resume - ${resume.userName}`;
-                    }}
-                  >
-                    Open Resume
-                  </Button>
-                ) : (
-                  <Typography
-                    variant="body2"
-                    sx={{ color: "#6B7280", marginTop: "0.5rem" }}
-                  >
-                    No resume file uploaded.
-                  </Typography>
-                )}
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      ) : (
-        <Typography sx={{ textAlign: "center", color: "#ffffff" }}>
-          No resumes found.
-        </Typography>
-      )}
+                </div>
+              ))
+            ) : (
+              <p className="text-sm text-gray-500">No resumes uploaded yet.</p>
+            )}
+          </div>
+        ))}
+      </div>
 
       {/* Pagination */}
-      <Pagination
-        count={Math.ceil(resumes.length / resumesPerPage)}
-        page={page}
-        onChange={(event, value) => setPage(value)}
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          marginTop: "1.5rem",
-          "& .MuiPaginationItem-root": {
-            color: "#ffffff",
-            backgroundColor: "rgba(255, 255, 255, 0.2)",
-            borderRadius: "8px",
-            "&.Mui-selected": {
-              backgroundColor: "#4F46E5",
-              color: "#ffffff",
-            },
-            "&:hover": {
-              backgroundColor: "rgba(255, 255, 255, 0.4)",
-            },
-          },
-        }}
-      />
+      <div className="flex justify-center items-center mt-8 space-x-2">
+        <button
+          className={`px-3 py-1 rounded-md ${
+            page === 1
+              ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+              : "bg-indigo-600 text-white hover:bg-indigo-700"
+          }`}
+          onClick={() => page > 1 && setPage(page - 1)}
+          disabled={page === 1}
+        >
+          &laquo; Prev
+        </button>
+
+        {[...Array(Math.ceil(users.length / usersPerPage)).keys()].map((num) => {
+          const pg = num + 1;
+          return (
+            <button
+              key={pg}
+              className={`px-3 py-1 rounded-md ${
+                page === pg
+                  ? "bg-indigo-700 text-white font-semibold"
+                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+              }`}
+              onClick={() => setPage(pg)}
+            >
+              {pg}
+            </button>
+          );
+        })}
+
+        <button
+          className={`px-3 py-1 rounded-md ${
+            page === Math.ceil(users.length / usersPerPage)
+              ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+              : "bg-indigo-600 text-white hover:bg-indigo-700"
+          }`}
+          onClick={() =>
+            page < Math.ceil(users.length / usersPerPage) && setPage(page + 1)
+          }
+          disabled={page === Math.ceil(users.length / usersPerPage)}
+        >
+          Next &raquo;
+        </button>
+      </div>
     </div>
   );
 };
 
 export default AllResumes;
-
-// import React, { useState, useEffect } from "react";
-// import {
-//   Card,
-//   CardContent,
-//   Typography,
-//   CircularProgress,
-//   Button,
-//   Pagination,
-// } from "@mui/material";
-// import axios from "axios";
-// import Cookies from "js-cookie";
-
-// const AllResumes = () => {
-//   const [resumes, setResumes] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const [page, setPage] = useState(1);
-//   const resumesPerPage = 9;
-
-//   useEffect(() => {
-//     const fetchResumes = async () => {
-//       const token = Cookies.get("token");
-//       if (!token) {
-//         setError("Token is missing");
-//         setLoading(false);
-//         return;
-//       }
-//       try {
-//         const response = await axios.get("http://localhost:7777/resume/all", {
-//           headers: { Authorization: `Bearer ${token}` },
-//         });
-//         setResumes(response.data.resumes || []);
-//       } catch (err) {
-//         console.error("Error fetching resumes:", err);
-//         setError("Failed to load resumes");
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-//     fetchResumes();
-//   }, []);
-
-//   if (loading)
-//     return (
-//       <CircularProgress
-//         sx={{ display: "flex", justifyContent: "center", marginTop: 10 }}
-//       />
-//     );
-//   if (error)
-//     return (
-//       <Typography color="error" sx={{ marginTop: 10, textAlign: "center" }}>
-//         {error}
-//       </Typography>
-//     );
-
-//   // Pagination Logic
-//   const indexOfLastResume = page * resumesPerPage;
-//   const indexOfFirstResume = indexOfLastResume - resumesPerPage;
-//   const currentResumes = resumes.slice(indexOfFirstResume, indexOfLastResume);
-
-//   return (
-//     <div
-//       style={{
-//         marginTop: "4rem",
-//         maxWidth: "80rem",
-//         marginLeft: "auto",
-//         marginRight: "auto",
-//         padding: "2rem",
-//         borderRadius: "12px",
-//         background: "#6366F1", // Indigo background
-//         boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
-//         color: "#fff",
-//       }}
-//     >
-//        <Typography
-//         variant="h4"
-//         sx={{
-//           fontWeight: "bold",
-//           textAlign: "center",
-//           marginBottom: "1.5rem",
-//           color: "#ffffff", // Matching the orange-yellow theme
-//         }}
-//       >
-//         All Resumes
-//       </Typography>
-
-//       {currentResumes.length > 0 ? (
-//         <div
-//           style={{
-//             display: "grid",
-//             gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-//             gap: "1.5rem",
-//           }}
-//         >
-//           {currentResumes.map((resume) => (
-//             <Card
-//               key={resume.id}
-//               sx={{
-//                 background: "#ffffff", // White background
-//                 boxShadow: "0 6px 12px rgba(0,0,0,0.2)",
-//                 borderRadius: "10px",
-//                 padding: "1rem",
-//                 transition: "all 0.3s ease-in-out",
-//                 "&:hover": {
-//                   transform: "scale(1.05)",
-//                   background: "#F3F4F6", // Light gray background on hover
-//                   boxShadow: "0 8px 16px rgba(0,0,0,0.3)",
-//                 },
-//               }}
-//             >
-//               <CardContent>
-//                 <Typography
-//                   variant="h5"
-//                   sx={{ fontWeight: "bold", color: "#4F46E5" }}
-//                 >
-//                   {resume.userName}
-//                 </Typography>
-//                 <Typography variant="body1" sx={{ color: "#374151" }}>
-//                   Score: {resume.score}/100
-//                 </Typography>
-//                 <Typography variant="body1" sx={{ color: "#374151" }}>
-//                   Readability: {resume.readabilityScore}/100
-//                 </Typography>
-//                 <Typography variant="body1" sx={{ color: "#374151" }}>
-//                   ATS Friendly:{" "}
-//                   {resume.atsFriendly ? (
-//                     <span style={{ color: "#10B981" }}>✅ Yes</span>
-//                   ) : (
-//                     <span style={{ color: "#EF4444" }}>❌ No</span>
-//                   )}
-//                 </Typography>
-
-//                 {/* Display Resume File */}
-//                 {resume.file ? (
-//                   <Button
-//                     variant="contained"
-//                     sx={{
-//                       marginTop: "0.5rem",
-//                       backgroundColor: "#ffffff",
-//                       color: "#4F46E5",
-//                       fontWeight: "bold",
-//                       "&:hover": { backgroundColor: "#E0E7FF" },
-//                     }}
-//                     onClick={() => {
-//                       const fileURL = `data:application/pdf;base64,${resume.file}`;
-//                       const newTab = window.open();
-//                       newTab.document.write(`
-//                         <iframe src="${fileURL}" width="100%" height="100%" style="border:none;"></iframe>
-//                       `);
-//                       newTab.document.title = `Resume - ${resume.userName}`;
-//                     }}
-//                   >
-//                     Open Resume
-//                   </Button>
-//                 ) : (
-//                   <Typography
-//                     variant="body2"
-//                     sx={{ color: "#6B7280", marginTop: "0.5rem" }}
-//                   >
-//                     No resume file uploaded.
-//                   </Typography>
-//                 )}
-//               </CardContent>
-//             </Card>
-//           ))}
-//         </div>
-//       ) : (
-//         <Typography sx={{ textAlign: "center", color: "#ffffff" }}>
-//           No resumes found.
-//         </Typography>
-//       )}
-
-//       {/* Pagination */}
-//       <Pagination
-//         count={Math.ceil(resumes.length / resumesPerPage)}
-//         page={page}
-//         onChange={(event, value) => setPage(value)}
-//         sx={{
-//           display: "flex",
-//           justifyContent: "center",
-//           marginTop: "1.5rem",
-//           "& .MuiPaginationItem-root": {
-//             color: "#ffffff",
-//             "&.Mui-selected": {
-//               backgroundColor: "#4F46E5",
-//               color: "#ffffff",
-//             },
-//             "&:hover": {
-//               backgroundColor: "#E0E7FF",
-//             },
-//           },
-//         }}
-//       />
-//     </div>
-//   );
-// };
-
-// export default AllResumes;
