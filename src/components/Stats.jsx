@@ -37,7 +37,7 @@ const Stats = () => {
   const COLORS = ["#2ECC71", "#E74C3C"];
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10 px-4">
+    <div className="min-h-screen flex flex-col items-center px-4">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">Resume Analysis Statistics</h1>
 
       {/* Total Resumes */}

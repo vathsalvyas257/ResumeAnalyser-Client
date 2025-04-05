@@ -38,7 +38,7 @@ const Navbar = () => {
               Profile
             </Link>
             <button
-              className="block w-full text-xl px-4 py-2 hover:text-red-600 font-medium flex items-center gap-2 cursor-pointer"
+              className="block w-full bg-red-500 text-white rounded-xl text-xl px-4 py-2 hover:bg-red-700 font-medium flex items-center gap-2 cursor-pointer"
               onClick={handleLogout}
             >
               Logout

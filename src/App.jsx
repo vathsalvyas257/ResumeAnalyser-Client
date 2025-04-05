@@ -23,7 +23,7 @@ function App() {
           <Route
             path="analyse"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={['admin', 'user']}>
                 <LandingPage />
               </ProtectedRoute>
             }
@@ -31,7 +31,7 @@ function App() {
           <Route 
           path="allresumes" 
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={['admin']}>
               <AllResumes />
             </ProtectedRoute>
           }/>
