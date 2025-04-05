@@ -13,7 +13,7 @@ const LoginForm = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch(); //  Redux dispatch
-  const API_URL = "http://localhost:7777"; 
+  const API_URL = "http://localhost:7777";
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -60,9 +60,9 @@ const LoginForm = () => {
   };
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit}>
-      <div className="relative">
-        <Mail className="absolute left-3 top-3 text-gray-400" size={20} />
+    <form className="space-y-4 shadow-2xl " onSubmit={handleSubmit}>
+      <div className="relative ">
+        <Mail className="absolute left-3 top-3 text-[#7F56D9]" size={20} />
         <input
           type="email"
           name="emailId"
@@ -74,12 +74,12 @@ const LoginForm = () => {
         />
       </div>
       <div className="relative">
-        <Lock className="absolute left-3 top-3 text-gray-400" size={20} />
+        <Lock className="absolute left-3 top-3 text-[#7F56D9]" size={20} />
         <input
           type="password"
           name="password"
           placeholder="Password"
-          className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#0077B6]"
+          className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#7F56D9]"
           value={formData.password}
           onChange={handleInputChange}
           required
@@ -90,7 +90,7 @@ const LoginForm = () => {
 
       <motion.button
         type="submit"
-        className="w-full bg-[#0077B6] hover:bg-[#023E8A] text-white py-3 rounded-lg font-semibold transition-all disabled:opacity-50"
+        className="w-full bg-[#7F56D9] hover:bg-[#a17df0] text-white py-3 rounded-lg font-semibold transition-all disabled:opacity-50"
         whileHover={{ scale: loading ? 1 : 1.05 }}
         disabled={loading}
       >
