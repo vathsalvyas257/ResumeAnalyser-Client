@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { Mail, Lock } from "lucide-react";
 import { motion } from "framer-motion";
+import { login } from "../../redux/userSlice";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({ emailId: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const API_URL = "http://localhost:7777"; // Replace with your backend URL
+  const dispatch = useDispatch(); //  Redux dispatch
+  const API_URL = "http://localhost:7777"; 
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -27,18 +30,28 @@ const LoginForm = () => {
         setLoading(false);
         return;
       }
+
       const response = await axios.post(`${API_URL}/login`, formData, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
 
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user",response.data.user);
+      const { token, user } = response.data;
+      console.log("Login response:", response.data);
+
+      // Save in localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      // Dispatch login action
+      dispatch(login({ token, user }));
+
       toast.success("Login Successful!", {
         duration: 2000,
         position: "bottom-right",
       });
-      navigate("/analyse");
+
+      navigate("/", { replace: true });
     } catch (err) {
       setError(err.response?.data || "Something went wrong");
     } finally {
