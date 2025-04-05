@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -16,7 +17,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-transparent backdrop-blur-md px-6 z-50">
+    <nav className="fixed top-0 left-0 w-full bg-transparent backdrop-blur-md px-6 py-4 z-50">
       <div className="flex justify-between items-center h-[80px]">
         {/* Left - Logo */}
         <div className="ml-4">
@@ -25,24 +26,37 @@ const Navbar = () => {
 
         {/* Center - Navigation Links */}
         <div className="hidden md:flex justify-between px-30 rounded-[40px] py-4 w-[650px] text-[19px] font-medium shadow-lg">
-          <Link to="/" className="hover:text-[#7F56D9] cursor-pointer">Home</Link>
-          <Link to="/analyser" className="hover:text-[#7F56D9] cursor-pointer">Analyser</Link>
-          <Link to="/stats" className="hover:text-[#7F56D9] cursor-pointer">Stats</Link>
-          <Link to="/about" className="hover:text-[#7F56D9] cursor-pointer">About</Link>
+
+          <Link to="/" className="hover:text-[#7F56D9] cursor-pointer">
+            Home
+          </Link>
+          <Link to="/analyzer" className="hover:text-[#7F56D9] cursor-pointer">
+            Analyser
+          </Link>
+          <Link to="/about" className="hover:text-[#7F56D9] cursor-pointer">
+            About
+          </Link>
+          <Link to="/contact" className="hover:text-[#7F56D9] cursor-pointer">
+            Contact
+          </Link>
+
         </div>
 
         {/* Right - Auth Buttons */}
         {isLoggedIn ? (
           <div className="hidden md:flex items-center gap-7">
-            <Link to="/profile" className="text-xl font-medium cursor-pointer hover:text-[#7F56D9]">
+            <Link to="/profile" className="text-xl font-medium cursor-pointer">
               Profile
             </Link>
+
+
             <button
               className="block w-full bg-red-500 text-white rounded-xl text-xl px-4 py-2 hover:bg-red-700 font-medium flex items-center gap-2 cursor-pointer"
               onClick={handleLogout}
             >
               Logout
             </button>
+
           </div>
         ) : (
           <div className="hidden md:flex items-center gap-7">

@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import GoogleOAuth from "./GoogleOAuth";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
-import GoogleOAuth from "./GoogleOAuth";
+import { motion } from "framer-motion";
+import { useState } from "react";
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
