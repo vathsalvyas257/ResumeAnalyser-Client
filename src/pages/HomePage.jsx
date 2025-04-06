@@ -1,5 +1,8 @@
 import React from "react";
 import { CircleCheckBig } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 
 const features = [
   {
@@ -23,6 +26,9 @@ const features = [
 ];
 
 const Home = () => {
+  const navigate = useNavigate();
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
   return (
     <div className="w-full px-6 -mt-6 overflow-x-hidden">
       {/* Hero Section */}
@@ -38,7 +44,10 @@ const Home = () => {
             supercharges your resume with AI-powered analysis, ensuring it’s
             ATS-friendly, optimized, and interview-ready in seconds.
           </p>
-          <button className="bg-[#7F56D9] py-3 px-6 rounded-xl text-xl text-white font-semibold mx-auto md:mx-0 transition-all duration-300 hover:bg-[#6A45C8] w-[60%]">
+          <button className="bg-[#7F56D9] py-3 px-6 rounded-xl text-xl text-white font-semibold mx-auto md:mx-0 transition-all duration-300 hover:bg-[#6A45C8] w-[60%]"
+           onClick={() => {
+            isLoggedIn ? navigate("/analyser") : navigate("/login")
+            }}>
             Upload your Resume Now 💪
           </button>
         </div>
@@ -101,7 +110,9 @@ const Home = () => {
               <CircleCheckBig color="#7F56D9" /> Instant analysis
             </p>
           </div>
-          <button className="bg-[#7F56D9] mt-6 py-3 px-6 rounded-xl text-lg sm:text-xl text-white font-medium">
+          <button className="bg-[#7F56D9] mt-6 py-3 px-6 rounded-xl text-lg sm:text-xl text-white font-medium" onClick={() => {
+            isLoggedIn ? navigate("/analyser") : navigate("/login")
+            }}>
             ⚡ Try Resumify Now
           </button>
         </div>
