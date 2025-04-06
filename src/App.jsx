@@ -8,16 +8,18 @@ import ProfilePage from "./components/ProfilePage";
 import ResumeAnalysisResults from "./components/ResumeAnalysisResults";
 import SignupForm from "./components/auth/SignupForm";
 import Stats from "./components/Stats";
+import ProtectedRoute from "./components/ProtectedRoute"
+import LandingPage from "./components/LandingPage"
 
-const scores = {
-  overall: 78.6,
-  categories: [
-    { label: "ATS Compatibility", value: 90.2 },
-    { label: "Keyword Optimization", value: 29.3 },
-    { label: "Structure & Formatting", value: 95.3 },
+// const scores = {
+//   overall: 78.6,
+//   categories: [
+//     { label: "ATS Compatibility", value: 90.2 },
+//     { label: "Keyword Optimization", value: 29.3 },
+//     { label: "Structure & Formatting", value: 95.3 },
 
-  ],
-};
+//   ],
+// };
 
 
 function App() {
@@ -30,8 +32,9 @@ function App() {
           <Route path="signup" element={<SignupForm />} />
           <Route path="stats" element={<Stats />} />
           <Route path="profile" element={<ProfilePage />} />
+          <Route path="analyser" element={<ResumeAnalysisResults />}/>
           <Route
-            path="analyzer"
+            path="analyse"
             element={
               <ProtectedRoute allowedRoles={['admin', 'user']}>
                 <LandingPage />
