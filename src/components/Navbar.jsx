@@ -19,10 +19,10 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-transparent backdrop-blur-md px-6 py-4 z-50">
+    <nav className="fixed top-0 left-0 w-full bg-gradient-to-b from-black/20 to-transparent backdrop-blur-md px-6 py-4 z-50">
       <div className="flex justify-between items-center h-[80px]">
         {/* Left - Logo */}
-        <div className="ml-4">
+        <div className="ml-2">
           <img src="/images/Logo.png" alt="Logo" className="w-50" />
         </div>
 

@@ -1,28 +1,33 @@
 import React from "react";
 import { CircleCheckBig } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Target, FileCheck2, Brain } from "lucide-react";
 
 const features = [
   {
     title: "Instant AI Analysis",
     description:
       "Get AI-powered resume analysis in seconds with a detailed breakdown of strengths and improvement areas.",
-    icon: "AI",
+    icon:  <Brain className="text-blue-600 w-12 h-12 mx-auto" />,
   },
   {
     title: "ATS Optimization",
     description:
       "Ensure your resume is ATS-friendly so it gets past recruiters' screening systems with ease.",
-    icon: "✔️",
+    icon: <FileCheck2 className="text-blue-600 w-12 h-12 mx-auto" />,
   },
   {
     title: "Interview Readiness",
     description:
       "Receive actionable feedback to refine your resume and make it stand out for hiring managers.",
-    icon: "🚀",
+    icon: <Target className="text-blue-600 w-12 h-12 mx-auto" />,
   },
 ];
 
 const Home = () => {
+  const navigate = useNavigate();
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   return (
     <div className="w-full px-6 -mt-6 overflow-x-hidden">
       {/* Hero Section */}
@@ -38,7 +43,10 @@ const Home = () => {
             supercharges your resume with AI-powered analysis, ensuring it’s
             ATS-friendly, optimized, and interview-ready in seconds.
           </p>
-          <button className="bg-[#7F56D9] py-3 px-6 rounded-xl text-xl text-white font-semibold mx-auto md:mx-0 transition-all duration-300 hover:bg-[#6A45C8] w-[60%]">
+          <button className="bg-[#7F56D9] py-3 px-6 rounded-xl text-xl text-white font-semibold mx-auto md:mx-0 transition-all duration-300 hover:bg-[#6A45C8] w-[60%]"
+          onClick={() => {
+            isLoggedIn ? navigate("/analyser") : navigate("/login")
+            }}>
             Upload your Resume Now 💪
           </button>
         </div>
@@ -65,7 +73,7 @@ const Home = () => {
               key={index}
               className="bg-white shadow-lg rounded-2xl p-6 flex flex-col items-center text-center transition-all duration-300 hover:shadow-2xl"
             >
-              <div className="bg-[#7F56D9] p-5 rounded-2xl text-xl font-bold text-white shadow-lg">
+              <div className="bg-blue-50 p-5 rounded-2xl text-xl shadow-lg">
                 {feature.icon}
               </div>
               <h2 className="text-2xl font-semibold mt-4">{feature.title}</h2>
@@ -101,7 +109,10 @@ const Home = () => {
               <CircleCheckBig color="#7F56D9" /> Instant analysis
             </p>
           </div>
-          <button className="bg-[#7F56D9] mt-6 py-3 px-6 rounded-xl text-lg sm:text-xl text-white font-medium">
+          <button className="bg-[#7F56D9] mt-6 py-3 px-6 rounded-xl text-lg sm:text-xl text-white font-medium"
+          onClick={() => {
+            isLoggedIn ? navigate("/analyser") : navigate("/login")
+            }}>
             ⚡ Try Resumify Now
           </button>
         </div>

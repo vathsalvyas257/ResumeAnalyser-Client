@@ -32,12 +32,11 @@ function App() {
           <Route path="signup" element={<SignupForm />} />
           <Route path="stats" element={<Stats />} />
           <Route path="profile" element={<ProfilePage />} />
-          <Route path="analyser" element={<ResumeAnalysisResults />}/>
           <Route
-            path="analyse"
+            path="analyser"
             element={
               <ProtectedRoute allowedRoles={['admin', 'user']}>
-                <LandingPage />
+                <ResumeAnalysisResults />
               </ProtectedRoute>
             }
           />
