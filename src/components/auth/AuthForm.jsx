@@ -8,7 +8,7 @@ const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white mt-[-100px] px-4">
+    <div className="min-h-screen flex items-center justify-center bg-white px-4 mt-[-50px]">
       <motion.div
         className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md"
         initial={{ opacity: 0, y: -30 }}
@@ -48,3 +48,6 @@ const AuthForm = () => {
 };
 
 export default AuthForm;
+
+
+{/* <div className="w-full md:w-[700px] h-24 md:h-28 bg-blue-100 border-2 border-dashed border-gray-400 rounded-lg shadow-sm mt-5 md:mt-0"></div> */}

@@ -232,32 +232,32 @@ const Home = () => {
 
     {/* Missing Keywords */}
     <div className="bg-gray-100 p-4 rounded-lg mt-2">
-    <h3 className="text-md font-semibold mt-4">Missing Keywords</h3>
-    <div className="flex flex-wrap gap-2 mt-2">
-      {result.analysis.missingKeywords?.length > 0 ? (
-        result.analysis.missingKeywords.map((keyword, index) => (
-          <span key={index} className="px-3 py-1 bg-red-100 text-red-600 border border-red-300 rounded-full text-sm">
-            {keyword}
-          </span>
-        ))
-      ) : (
-        <span className="text-gray-500">No missing keywords found.</span>
-      )}
-    </div>
+      <h3 className="text-md font-semibold mt-4">Missing Keywords</h3>
+      <div className="flex flex-wrap gap-2 mt-2">
+        {result.analysis.missingKeywords?.length > 0 ? (
+          result.analysis.missingKeywords.map((keyword, index) => (
+            <span key={index} className="px-3 py-1 bg-red-100 text-red-600 border border-red-300 rounded-full text-sm">
+              {keyword}
+            </span>
+          ))
+        ) : (
+          <span className="text-gray-500">No missing keywords found.</span>
+        )}
+      </div>
     </div>
 
     {/* Suggested Jobs */}
     <div className="bg-gray-100 p-4 rounded-lg mt-2">
-    <h3 className="text-md font-semibold mt-4">Suggested Jobs</h3>
-    <ul className="mt-2 space-y-1">
-      {result.analysis.suggestedJobs?.length > 0 ? (
-        result.analysis.suggestedJobs.map((job, index) => (
-          <li key={index} className="text-indigo-700 font-medium">• {job}</li>
-        ))
-      ) : (
-        <li className="text-gray-500">No suggested jobs available.</li>
-      )}
-    </ul>
+      <h3 className="text-md font-semibold mt-4">Suggested Jobs</h3>
+      <ul className="mt-2 space-y-1">
+        {result.analysis.suggestedJobs?.length > 0 ? (
+          result.analysis.suggestedJobs.map((job, index) => (
+            <li key={index} className="text-indigo-700 font-medium">• {job}</li>
+          ))
+        ) : (
+          <li className="text-gray-500">No suggested jobs available.</li>
+        )}
+      </ul>
     </div>
 
     {/* Section-wise Scores (Bar Chart) */}
