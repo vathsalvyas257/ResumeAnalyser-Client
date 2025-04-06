@@ -6,7 +6,7 @@ const AllResumes = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const usersPerPage = 5;
+  const usersPerPage = 6;
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -48,9 +48,9 @@ const AllResumes = () => {
     <div className="p-8 min-h-screen bg-gray-50">
       <h2 className="text-3xl font-bold text-center mb-8 font-sans">Users & Their Resumes</h2>
 
-      <div className="grid grid-cols-1 gap-6">
+      <div className="grid grid-cols-3 gap-6">
         {currentUsers.map((user) => (
-          <div key={user.email} className="bg-white p-6 rounded-xl shadow-md">
+          <div key={user.email} className="bg-white p-6 rounded-xl shadow-lg">
             <h3 className="text-xl font-bold text-indigo-600">{user.name}</h3>
             <p className="text-gray-600">{user.email}</p>
 
@@ -60,17 +60,6 @@ const AllResumes = () => {
               user.lastTwoResumeLinks.map((resume, index) => (
                 <div key={resume.id} className="mb-6">
                   <h4 className="font-semibold text-gray-800">Resume {index + 1}</h4>
-                  <p className="text-sm text-gray-600">
-                    Score: {resume.score}/100 | Readability: {resume.readabilityScore}/100
-                  </p>
-                  <p className="text-sm">
-                    ATS Friendly:{" "}
-                    {resume.atsFriendly ? (
-                      <span className="text-green-600 font-semibold">✅ Yes</span>
-                    ) : (
-                      <span className="text-red-500 font-semibold">❌ No</span>
-                    )}
-                  </p>
                   {resume ? (
                     <a
                       href={resume}
@@ -78,7 +67,7 @@ const AllResumes = () => {
                       rel="noopener noreferrer"
                       className="inline-block mt-2 px-4 py-1 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm"
                     >
-                      Open Resume
+                      View Resume
                     </a>
                   ) : (
                     <p className="text-gray-400 text-sm mt-2">No File Uploaded.</p>
@@ -103,7 +92,7 @@ const AllResumes = () => {
           onClick={() => page > 1 && setPage(page - 1)}
           disabled={page === 1}
         >
-          &laquo; Prev
+          <span className="text-xl leading-none" title="Go to prev page">&laquo;</span>
         </button>
 
         {[...Array(Math.ceil(users.length / usersPerPage)).keys()].map((num) => {
@@ -134,7 +123,7 @@ const AllResumes = () => {
           }
           disabled={page === Math.ceil(users.length / usersPerPage)}
         >
-          Next &raquo;
+          <span className="text-2xl leading-none" title="Go to next page">&raquo;</span>
         </button>
       </div>
     </div>
