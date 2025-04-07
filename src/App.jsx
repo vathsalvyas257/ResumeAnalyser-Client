@@ -9,7 +9,7 @@ import ResumeAnalysisResults from "./components/ResumeAnalysisResults";
 import SignupForm from "./components/auth/SignupForm";
 import Stats from "./components/Stats";
 import ProtectedRoute from "./components/ProtectedRoute"
-import LandingPage from "./components/LandingPage"
+import About from "./components/About"
 
 // const scores = {
 //   overall: 78.6,
@@ -47,6 +47,7 @@ function App() {
               <AllResumes />
             </ProtectedRoute>
           }/>
+          <Route path="about" element={<About/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
