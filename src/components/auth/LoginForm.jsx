@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { Mail, Lock } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { motion } from "framer-motion";
 import { login } from "../../redux/userSlice";
 
@@ -11,12 +11,17 @@ const LoginForm = () => {
   const [formData, setFormData] = useState({ emailId: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch(); //  Redux dispatch
   const API_URL = "http://localhost:7777";
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = async (e) => {
@@ -76,7 +81,7 @@ const LoginForm = () => {
       <div className="relative">
         <Lock className="absolute left-3 top-3 text-[#7F56D9]" size={20} />
         <input
-          type="password"
+          type={showPassword ? "text" : "password"}
           name="password"
           placeholder="Password"
           className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#7F56D9]"
@@ -84,6 +89,13 @@ const LoginForm = () => {
           onChange={handleInputChange}
           required
         />
+        <button 
+          type="button"
+          className="absolute right-3 top-3 text-gray-500 hover:text-[#7F56D9]"
+          onClick={togglePasswordVisibility}
+        >
+          {showPassword ? <EyeOff size={22} /> : <Eye size={22} />}
+        </button>
       </div>
 
       {error && <p className="text-red-500 text-sm text-center">{error}</p>}

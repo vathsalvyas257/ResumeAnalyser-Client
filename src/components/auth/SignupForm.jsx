@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { Mail, Lock, User } from "lucide-react";
+import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 
 const SignupForm = () => {
   const [formData, setFormData] = useState({
@@ -14,10 +14,20 @@ const SignupForm = () => {
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const API_URL = "http://localhost:7777"; // Replace with your backend URL
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   const handleSubmit = async (e) => {
@@ -130,7 +140,7 @@ const SignupForm = () => {
       <div className="relative">
         <Lock className="absolute left-3 top-3 text-gray-400" size={20} />
         <input
-          type="password"
+          type={showPassword ? "text" : "password"}
           name="password"
           placeholder="Password"
           className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#0077B6]"
@@ -138,12 +148,19 @@ const SignupForm = () => {
           onChange={handleInputChange}
           required
         />
+        <button 
+          type="button"
+          className="absolute right-3 top-3 text-gray-500 hover:text-[#7F56D9]"
+          onClick={togglePasswordVisibility}
+        >
+          {showPassword ? <EyeOff size={22} /> : <Eye size={22} />}
+        </button>
       </div>
 
       <div className="relative">
         <Lock className="absolute left-3 top-3 text-gray-400" size={20} />
         <input
-          type="password"
+          type={showConfirmPassword ? "text" : "password"}
           name="confirmPassword"
           placeholder="Confirm Password"
           className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#0077B6]"
@@ -151,6 +168,13 @@ const SignupForm = () => {
           onChange={handleInputChange}
           required
         />
+        <button 
+          type="button"
+          className="absolute right-3 top-3 text-gray-500 hover:text-[#7F56D9]"
+          onClick={toggleConfirmPasswordVisibility}
+        >
+          {showConfirmPassword ? <EyeOff size={22} /> : <Eye size={22} />}
+        </button>
       </div>
 
       <button
