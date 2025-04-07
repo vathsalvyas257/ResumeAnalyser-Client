@@ -147,9 +147,9 @@ const ProfilePage = () => {
           <TextField fullWidth label="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} margin="normal" />
         </DialogContent>
         <DialogActions>
-          (isAdmin &&  {
+          {/* (isAdmin &&  { */}
             <Button onClick={() => setOpenEditModal(false)} color="secondary">Cancel</Button>
-          })
+          {/* }) */}
           <Button onClick={handleSaveProfile} color="primary" variant="contained">Save</Button>
         </DialogActions>
       </Dialog>

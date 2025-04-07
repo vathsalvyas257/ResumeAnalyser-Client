@@ -1,7 +1,6 @@
-
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userSlice";
 import { resetResume } from "../redux/resumeSlice";
@@ -11,11 +10,17 @@ const Navbar = () => {
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation(); // Get current location/URL
 
   const handleLogout = () => {
     dispatch(resetResume())
     dispatch(logout());
     navigate("/");
+  };
+
+  // Function to check if the link is active
+  const isActive = (path) => {
+    return location.pathname === path;
   };
 
   return (
@@ -29,16 +34,28 @@ const Navbar = () => {
         {/* Center - Navigation Links */}
         <div className="hidden md:flex justify-between px-30 rounded-[40px] py-4 w-[650px] text-[19px] font-medium shadow-lg">
 
-          <Link to="/" className="hover:text-[#7F56D9] cursor-pointer">
+          <Link 
+            to="/" 
+            className={`${isActive("/") ? "text-[#7F56D9] font-bold" : ""} hover:text-[#7F56D9] cursor-pointer`}
+          >
             Home
           </Link>
-          <Link to="/analyser" className="hover:text-[#7F56D9] cursor-pointer">
+          <Link 
+            to="/analyser" 
+            className={`${isActive("/analyser") ? "text-[#7F56D9] font-bold" : ""} hover:text-[#7F56D9] cursor-pointer`}
+          >
             Analyser
           </Link>
-          <Link to="/stats" className="hover:text-[#7F56D9] cursor-pointer">
+          <Link 
+            to="/stats" 
+            className={`${isActive("/stats") ? "text-[#7F56D9] font-bold" : ""} hover:text-[#7F56D9] cursor-pointer`}
+          >
             Stats
           </Link>
-          <Link to="/about" className="hover:text-[#7F56D9] cursor-pointer">
+          <Link 
+            to="/about" 
+            className={`${isActive("/about") ? "text-[#7F56D9] font-bold" : ""} hover:text-[#7F56D9] cursor-pointer`}
+          >
             About
           </Link>
 
@@ -47,7 +64,10 @@ const Navbar = () => {
         {/* Right - Auth Buttons */}
         {isLoggedIn ? (
           <div className="hidden md:flex items-center gap-7">
-            <Link to="/profile" className="text-xl font-medium cursor-pointer">
+            <Link 
+              to="/profile" 
+              className={`${isActive("/profile") ? "text-[#7F56D9] font-bold" : ""} text-xl font-medium cursor-pointer`}
+            >
               Profile
             </Link>
 
@@ -62,7 +82,12 @@ const Navbar = () => {
           </div>
         ) : (
           <div className="hidden md:flex items-center gap-7">
-            <Link to="/login" className="text-xl font-medium cursor-pointer">Log in</Link>
+            <Link 
+              to="/login" 
+              className={`${isActive("/login") ? "text-[#7F56D9] font-bold" : ""} text-xl font-medium cursor-pointer`}
+            >
+              Log in
+            </Link>
             <Link
               to="/login"
               className="text-xl font-medium text-white bg-[#7F56D9] py-3 px-5 rounded-xl cursor-pointer hover:bg-[#6B47C6]"
@@ -86,14 +111,39 @@ const Navbar = () => {
           open ? "block" : "hidden"
         }`}
       >
-        <Link to="/" className="py-2 hover:text-[#7F56D9] cursor-pointer">Home</Link>
-        <Link to="/analyser" className="py-2 hover:text-[#7F56D9] cursor-pointer">Analyser</Link>
-        <Link to="/stats" className="py-2 hover:text-[#7F56D9] cursor-pointer">Stats</Link>
-        <Link to="/about" className="py-2 hover:text-[#7F56D9] cursor-pointer">About</Link>
+        <Link 
+          to="/" 
+          className={`py-2 ${isActive("/") ? "text-[#7F56D9] font-bold" : ""} hover:text-[#7F56D9] cursor-pointer`}
+        >
+          Home
+        </Link>
+        <Link 
+          to="/analyser" 
+          className={`py-2 ${isActive("/analyser") ? "text-[#7F56D9] font-bold" : ""} hover:text-[#7F56D9] cursor-pointer`}
+        >
+          Analyser
+        </Link>
+        <Link 
+          to="/stats" 
+          className={`py-2 ${isActive("/stats") ? "text-[#7F56D9] font-bold" : ""} hover:text-[#7F56D9] cursor-pointer`}
+        >
+          Stats
+        </Link>
+        <Link 
+          to="/about" 
+          className={`py-2 ${isActive("/about") ? "text-[#7F56D9] font-bold" : ""} hover:text-[#7F56D9] cursor-pointer`}
+        >
+          About
+        </Link>
 
         {isLoggedIn ? (
           <>
-            <Link to="/profile" className="py-2 hover:text-[#7F56D9] cursor-pointer">Profile</Link>
+            <Link 
+              to="/profile" 
+              className={`py-2 ${isActive("/profile") ? "text-[#7F56D9] font-bold" : ""} hover:text-[#7F56D9] cursor-pointer`}
+            >
+              Profile
+            </Link>
             <button
               className="py-2 text-xl font-medium text-red-600 cursor-pointer"
               onClick={handleLogout}
@@ -103,7 +153,12 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <Link to="/login" className="py-2 text-xl font-medium cursor-pointer">Log in</Link>
+            <Link 
+              to="/login" 
+              className={`py-2 ${isActive("/login") ? "text-[#7F56D9] font-bold" : ""} text-xl font-medium cursor-pointer`}
+            >
+              Log in
+            </Link>
             <Link
               to="/login"
               className="py-2 text-xl font-medium text-white bg-[#7F56D9] px-6 rounded-xl cursor-pointer hover:bg-[#6B47C6]"
