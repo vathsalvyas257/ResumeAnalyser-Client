@@ -28,7 +28,7 @@ const GoogleOAuth = () => {
         duration: 2000,
         position: "bottom-right",
       });
-      navigate("/analyse");
+      navigate("/analyser");
     } catch {
       toast.error("Google login failed", {duration: 2000, position: "bottom-right"});
     }

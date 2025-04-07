@@ -11,7 +11,6 @@ import {uploadResumeSuccess} from "../redux/resumeSlice"
 import { resetResume } from "../redux/resumeSlice";
 
 
-
 const ResumeAnalyzer = () => {
   const [resumeUploaded, setResumeUploaded] = useState(false);
   const [dragActive, setDragActive] = useState(false);
@@ -23,8 +22,7 @@ const ResumeAnalyzer = () => {
   const [result, setResult] = useState(null);
   const [data, setData] = useState([]);
   const dispatch = useDispatch();
-  const { uploaded, resumeResult } = useSelector(state => state.resume);
-
+  const { uploaded, resumeResult, role, sectionScores } = useSelector(state => state.resume);
 
   const handleResumeUpload = (e) => {
     const file = e.target.files[0];
@@ -68,9 +66,7 @@ const ResumeAnalyzer = () => {
           console.log(response.data.resume);
           // Set the received response
           setResult(response.data.resume);
-          dispatch(uploadResumeSuccess(response.data.resume));
           console.log("uploaded:", uploaded)
-          toast.success(`${response.data.message}`, {duration:2000, position:"bottom-right"});
           // alert(response.data.message);
         
     
@@ -82,8 +78,10 @@ const ResumeAnalyzer = () => {
            }));
            setData(newData); // ✅ Update state
            console.log(newData);
-    
-          // setDisplay(true);
+           const DummyResult = response.data.resume;
+          const DummyRole = jobRole;
+          dispatch(uploadResumeSuccess({DummyRole, DummyResult, newData}));
+          toast.success(`${response.data.message}`, {duration:2000, position:"bottom-right"});
         } catch (error) {
           console.error("Error analyzing resume:", error);
           toast.error("Failed to analyze the resume", {duration:2000, position:"bottom-right"});
@@ -187,7 +185,7 @@ return (
         {resumeUploaded && jobRole.trim() !== "" && (
           <button
             onClick={handleAnalyze}
-            className="w-full py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition"
+            className="w-full py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition cursor-pointer"
             disabled={loading}
           >
             {loading ? "Analyzing..." : "Analyze Resume"}
@@ -197,7 +195,7 @@ return (
     ) : (
       <div className="w-full max-w-6xl bg-gradient-to-br from-gray-100 to-blue-100 p-6 md:p-8 rounded-lg shadow-md">
         <div className="text-center w-full">
-          <h3 className="text-3xl font-bold text-blue-700 mb-2">Resume Analysis for: {jobRole}</h3>
+          <h3 className="text-3xl font-bold text-blue-700 mb-2">Resume Analysis for: {role}</h3>
           <p className="text-lg text-blue-700 mb-4">Here's how your resume performs</p>
           <div className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-6 w-full">
             <div className="w-64 h-44 animate-fadeIn flex flex-col items-center">
@@ -269,7 +267,7 @@ return (
         <div className="w-full text-center mt-16">
           <h4 className="text-2xl font-semibold text-gray-800">Section Wise Score</h4>
           <div className="flex flex-wrap justify-center items-center gap-5 p-3">
-            {data.map((category, index) => (
+            {sectionScores.map((category, index) => (
               <div
                 className="w-44 text-center p-4 rounded-lg bg-white shadow-md transform transition-transform duration-300 hover:-translate-y-1"
                 key={index}
@@ -295,7 +293,7 @@ return (
         </div>
         <button
             onClick={() => dispatch(resetResume())}
-            className="w-full py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition mt-6"
+            className="w-full py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition mt-6 cursor-pointer"
           >
             Upload New Resume
           </button>
