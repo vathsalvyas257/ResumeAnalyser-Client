@@ -125,7 +125,9 @@ const ResumeAnalyzer = () => {
 
     const file = event.dataTransfer.files[0]; // Get the dropped file
     if (file) {
+      setResumeUploaded(true);
       setResume(file);
+      setAnalyzeClicked(false);
     }
   };
 
