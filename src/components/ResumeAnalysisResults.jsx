@@ -85,6 +85,7 @@ const ResumeAnalyzer = () => {
         } catch (error) {
           console.error("Error analyzing resume:", error);
           toast.error("Failed to analyze the resume", {duration:2000, position:"bottom-right"});
+          toast.error(error.response.data.error,{duration:3000, position:"bottom-right"});
         } finally {
           setLoading(false);
         }

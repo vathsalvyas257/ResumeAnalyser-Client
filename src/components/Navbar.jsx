@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userSlice";
 import { resetResume } from "../redux/resumeSlice";
+import axios from "axios";
+import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -15,9 +18,24 @@ const Navbar = () => {
   const handleLogout = () => {
     dispatch(resetResume());
     dispatch(logout());
+    toast.success("Logged out successfully!", {position:"bottom-right", duration:2000});
     navigate("/");
   };
-
+  useEffect(()=>{
+    const verifyToken = async () =>{
+      const token = Cookies.get("token");
+      const response = await axios.get("http://localhost:7777/user/verify-token", {
+            headers: {
+              Authorization: `Bearer ${token}`, // Pass the token
+                "Content-Type": "multipart/form-data",
+            },
+      });
+      if(!response.data){
+        handleLogout();
+      }
+    };
+    verifyToken();
+  },[]);
   // Function to check if the link is active
   const isActive = (path) => {
     return location.pathname === path;
