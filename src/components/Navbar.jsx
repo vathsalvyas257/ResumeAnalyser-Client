@@ -13,7 +13,7 @@ const Navbar = () => {
   const location = useLocation(); // Get current location/URL
 
   const handleLogout = () => {
-    dispatch(resetResume())
+    dispatch(resetResume());
     dispatch(logout());
     navigate("/");
   };
@@ -33,44 +33,59 @@ const Navbar = () => {
 
         {/* Center - Navigation Links */}
         <div className="hidden md:flex justify-between px-30 rounded-[40px] py-4 w-[650px] text-[19px] font-medium shadow-lg">
-
-          <Link 
-            to="/" 
-            className={`${isActive("/") ? "text-[#7F56D9] font-bold" : ""} hover:text-[#7F56D9] cursor-pointer`}
+          <Link
+            to="/"
+            className={`${
+              isActive("/") ? "text-[#7F56D9] font-bold" : ""
+            } hover:text-[#7F56D9] cursor-pointer`}
           >
             Home
           </Link>
-          <Link 
-            to="/analyser" 
-            className={`${isActive("/analyser") ? "text-[#7F56D9] font-bold" : ""} hover:text-[#7F56D9] cursor-pointer`}
+          <Link
+            to="/analyser"
+            className={`${
+              isActive("/analyser") ? "text-[#7F56D9] font-bold" : ""
+            } hover:text-[#7F56D9] cursor-pointer`}
           >
             Analyser
           </Link>
-          <Link 
-            to="/stats" 
-            className={`${isActive("/stats") ? "text-[#7F56D9] font-bold" : ""} hover:text-[#7F56D9] cursor-pointer`}
+          <Link
+            to="/stats"
+            className={`${
+              isActive("/stats") ? "text-[#7F56D9] font-bold" : ""
+            } hover:text-[#7F56D9] cursor-pointer`}
           >
             Stats
           </Link>
-          <Link 
-            to="/about" 
-            className={`${isActive("/about") ? "text-[#7F56D9] font-bold" : ""} hover:text-[#7F56D9] cursor-pointer`}
+          <Link
+            to="/about"
+            className={`${
+              isActive("/about") ? "text-[#7F56D9] font-bold" : ""
+            } hover:text-[#7F56D9] cursor-pointer`}
           >
             About
           </Link>
-
+          <Link
+            to="/profile"
+            className={`${
+              isActive("/profile") ? "text-[#7F56D9] font-bold" : ""
+            } text-xl font-medium cursor-pointer`}
+          >
+            Profile
+          </Link>
         </div>
 
         {/* Right - Auth Buttons */}
         {isLoggedIn ? (
           <div className="hidden md:flex items-center gap-7">
-            <Link 
-              to="/profile" 
-              className={`${isActive("/profile") ? "text-[#7F56D9] font-bold" : ""} text-xl font-medium cursor-pointer`}
+            <Link
+              to="/profile"
+              className={`${
+                isActive("/profile") ? "text-[#7F56D9] font-bold" : ""
+              } text-xl font-medium cursor-pointer`}
             >
               Profile
             </Link>
-
 
             <button
               className="block w-full bg-red-500 text-white rounded-xl text-xl px-4 py-2 hover:bg-red-700 font-medium flex items-center gap-2 cursor-pointer"
@@ -78,13 +93,14 @@ const Navbar = () => {
             >
               Logout
             </button>
-
           </div>
         ) : (
           <div className="hidden md:flex items-center gap-7">
-            <Link 
-              to="/login" 
-              className={`${isActive("/login") ? "text-[#7F56D9] font-bold" : ""} text-xl font-medium cursor-pointer`}
+            <Link
+              to="/login"
+              className={`${
+                isActive("/login") ? "text-[#7F56D9] font-bold" : ""
+              } text-xl font-medium cursor-pointer`}
             >
               Log in
             </Link>
@@ -111,36 +127,46 @@ const Navbar = () => {
           open ? "block" : "hidden"
         }`}
       >
-        <Link 
-          to="/" 
-          className={`py-2 ${isActive("/") ? "text-[#7F56D9] font-bold" : ""} hover:text-[#7F56D9] cursor-pointer`}
+        <Link
+          to="/"
+          className={`py-2 ${
+            isActive("/") ? "text-[#7F56D9] font-bold" : ""
+          } hover:text-[#7F56D9] cursor-pointer`}
         >
           Home
         </Link>
-        <Link 
-          to="/analyser" 
-          className={`py-2 ${isActive("/analyser") ? "text-[#7F56D9] font-bold" : ""} hover:text-[#7F56D9] cursor-pointer`}
+        <Link
+          to="/analyser"
+          className={`py-2 ${
+            isActive("/analyser") ? "text-[#7F56D9] font-bold" : ""
+          } hover:text-[#7F56D9] cursor-pointer`}
         >
           Analyser
         </Link>
-        <Link 
-          to="/stats" 
-          className={`py-2 ${isActive("/stats") ? "text-[#7F56D9] font-bold" : ""} hover:text-[#7F56D9] cursor-pointer`}
+        <Link
+          to="/stats"
+          className={`py-2 ${
+            isActive("/stats") ? "text-[#7F56D9] font-bold" : ""
+          } hover:text-[#7F56D9] cursor-pointer`}
         >
           Stats
         </Link>
-        <Link 
-          to="/about" 
-          className={`py-2 ${isActive("/about") ? "text-[#7F56D9] font-bold" : ""} hover:text-[#7F56D9] cursor-pointer`}
+        <Link
+          to="/about"
+          className={`py-2 ${
+            isActive("/about") ? "text-[#7F56D9] font-bold" : ""
+          } hover:text-[#7F56D9] cursor-pointer`}
         >
           About
         </Link>
 
         {isLoggedIn ? (
           <>
-            <Link 
-              to="/profile" 
-              className={`py-2 ${isActive("/profile") ? "text-[#7F56D9] font-bold" : ""} hover:text-[#7F56D9] cursor-pointer`}
+            <Link
+              to="/profile"
+              className={`py-2 ${
+                isActive("/profile") ? "text-[#7F56D9] font-bold" : ""
+              } hover:text-[#7F56D9] cursor-pointer`}
             >
               Profile
             </Link>
@@ -153,9 +179,11 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <Link 
-              to="/login" 
-              className={`py-2 ${isActive("/login") ? "text-[#7F56D9] font-bold" : ""} text-xl font-medium cursor-pointer`}
+            <Link
+              to="/login"
+              className={`py-2 ${
+                isActive("/login") ? "text-[#7F56D9] font-bold" : ""
+              } text-xl font-medium cursor-pointer`}
             >
               Log in
             </Link>
