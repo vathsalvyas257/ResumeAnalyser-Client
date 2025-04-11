@@ -4,6 +4,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userSlice";
 import { resetResume } from "../redux/resumeSlice";
+import { Button } from "@mui/material";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -11,6 +12,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation(); // Get current location/URL
+  const isAdmin = useSelector((state) => state.user.user.role) == "admin";
 
   const handleLogout = () => {
     dispatch(resetResume());
@@ -22,7 +24,7 @@ const Navbar = () => {
   const isActive = (path) => {
     return location.pathname === path;
   };
-
+  console.log(isAdmin);
   return (
     <nav className="fixed top-0 left-0 w-full bg-gradient-to-b from-black/20 to-transparent backdrop-blur-md px-6 py-4 z-50">
       <div className="flex justify-between items-center h-[80px]">
@@ -65,14 +67,15 @@ const Navbar = () => {
           >
             About
           </Link>
-          <Link
-            to="/profile"
-            className={`${
-              isActive("/profile") ? "text-[#7F56D9] font-bold" : ""
-            } text-xl font-medium cursor-pointer`}
-          >
-            Profile
-          </Link>
+          {isAdmin && (
+            <div
+              onClick={() => {
+                navigate("/allResumes");
+              }}
+            >
+              All Resumes
+            </div>
+          )}
         </div>
 
         {/* Right - Auth Buttons */}
@@ -159,6 +162,14 @@ const Navbar = () => {
         >
           About
         </Link>
+        {isAdmin && (
+          <Button
+            value={"All Resumes"}
+            onClick={() => {
+              navigate("/allResumes");
+            }}
+          />
+        )}
 
         {isLoggedIn ? (
           <>
