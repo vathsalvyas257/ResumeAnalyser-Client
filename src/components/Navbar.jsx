@@ -16,7 +16,17 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation(); // Get current location/URL
-  const isAdmin = useSelector((state) => state.user.user.role) == "admin";
+  const user = useSelector((state)=> state.user.user);
+  let isAdmin = false;
+  if(user){
+    isAdmin = user.role == "admin";
+  }
+
+  const handleDispatch = ()=>{
+    dispatch(resetResume());
+    dispatch(logout());
+    navigate("/");
+  }
 
   const handleLogout = () => {
     dispatch(resetResume());
@@ -34,7 +44,7 @@ const Navbar = () => {
             },
       });
       if(!response.data){
-        handleLogout();
+        handleDispatch();
       }
     };
     verifyToken();
@@ -43,7 +53,7 @@ const Navbar = () => {
   const isActive = (path) => {
     return location.pathname === path;
   };
-  console.log(isAdmin);
+  // console.log(isAdmin);
   return (
     <nav className="fixed top-0 left-0 w-full bg-gradient-to-b from-black/20 to-transparent backdrop-blur-md px-6 py-4 z-50">
       <div className="flex justify-between items-center h-[80px]">
@@ -53,7 +63,7 @@ const Navbar = () => {
         </div>
 
         {/* Center - Navigation Links */}
-        <div className="hidden md:flex justify-between px-30 rounded-[40px] py-4 w-[650px] text-[19px] font-medium shadow-lg">
+        <div className="hidden md:flex gap-4 justify-between px-30 rounded-[40px] py-4 w-[750px] text-[19px] font-medium shadow-lg">
           <Link
             to="/"
             className={`${
@@ -87,13 +97,12 @@ const Navbar = () => {
             About
           </Link>
           {isAdmin && (
-            <div
-              onClick={() => {
-                navigate("/allResumes");
-              }}
-            >
-              All Resumes
-            </div>
+            <Link
+            to="/allResumes"
+            className={`${
+              isActive("/allResumes") ? "text-[#7F56D9] font-bold" : ""
+            } hover:text-[#7F56D9] cursor-pointer`}
+          >All Resumes</Link>
           )}
         </div>
 
@@ -182,13 +191,13 @@ const Navbar = () => {
           About
         </Link>
         {isAdmin && (
-          <Button
-            value={"All Resumes"}
-            onClick={() => {
-              navigate("/allResumes");
-            }}
-          />
-        )}
+            <Link
+            to="/allResumes"
+            className={`${
+              isActive("/allResumes") ? "text-[#7F56D9] font-bold" : ""
+            } hover:text-[#7F56D9] cursor-pointer`}
+          >All Resumes</Link>
+          )}
 
         {isLoggedIn ? (
           <>

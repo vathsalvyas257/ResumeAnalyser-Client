@@ -10,7 +10,7 @@ const GradientProgressBar = ({ value, max = 100, label }) => {
         style={{
           width: `${percentage}%`,
           background: "linear-gradient(to right, #00c6ff, #0072ff)",
-          transition: "width 0.5s ease-in-out",
+          transition: "width 1.0s ease-in-out",
         }}
       >
         <div className="relative  left-0 text-center text-s font-semibold text-gray-700 mx-10">

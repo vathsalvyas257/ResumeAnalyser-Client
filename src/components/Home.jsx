@@ -15,9 +15,6 @@ const Home = () => {
   const [jobDescription,setJobDescription]=useState("");
   const [data, setData] = useState([]); // Define data state
 
-
-
-
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {

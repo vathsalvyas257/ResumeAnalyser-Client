@@ -20,7 +20,7 @@ const Footer = () => {
           <Link to="/home" className="text-gray-400 hover:text-white text-sm">Home</Link>
           <Link to="/analyser" className="text-gray-400 hover:text-white text-sm">Analyser</Link>
           <Link to="/stats" className="text-gray-400 hover:text-white text-sm">Stats</Link>
-          <Link to="/About" className="text-gray-400 hover:text-white text-sm">About</Link>
+          <Link to="/about" className="text-gray-400 hover:text-white text-sm">About</Link>
         </div>
 
         {/* Right Side - Social Media Icons */}

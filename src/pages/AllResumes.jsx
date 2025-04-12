@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { CircularProgress } from "@mui/material";
 
 const AllResumes = () => {
   const [users, setUsers] = useState([]);
@@ -37,7 +38,11 @@ const AllResumes = () => {
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
   if (loading)
-    return <div className="flex justify-center mt-10"><div className="loader">Loading...</div></div>;
+    return (
+          <div className="flex justify-center items-center h-screen">
+            <CircularProgress className="-mt-36" />
+          </div>
+        );
 
   if (error)
     return (
@@ -45,10 +50,10 @@ const AllResumes = () => {
     );
 
   return (
-    <div className="p-8 min-h-screen bg-gray-50">
+    <div className="p-8 bg-gray-50 -mt-8">
       <h2 className="text-3xl font-bold text-center mb-8 font-sans">Users & Their Resumes</h2>
 
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {currentUsers.map((user) => (
           <div key={user.email} className="bg-white p-6 rounded-xl shadow-lg">
             <h3 className="text-xl font-bold text-indigo-600">{user.name}</h3>

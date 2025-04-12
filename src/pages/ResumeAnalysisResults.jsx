@@ -159,7 +159,7 @@ return (
           ) : (
             <div className="flex flex-col items-center">
               <UploadCloud size={78} className="text-white mb-2" />
-              <p className="text-sm text-white">{dragActive ? "Drop the file here" : "Drag & drop or click to upload your resume (PDF, DOCX)"}</p>
+              <p className="text-sm text-white px-16">{dragActive ? "Drop the file here" : "Drag & drop or click to upload your resume (PDF, DOCX)"}</p>
             </div>
           )}
         </motion.label>

@@ -3,10 +3,13 @@ import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, 
   PieChart, Pie, Cell, Legend 
 } from "recharts";
+import { CircularProgress, useMediaQuery } from "@mui/material";
 
 const Stats = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const isMobile = useMediaQuery("(max-width:600px)");
+
 
   useEffect(() => {
     fetch("http://localhost:7777/resume/stats") // Change to your backend API URL
@@ -21,23 +24,37 @@ const Stats = () => {
       });
   }, []);
 
-  if (loading) return <p className="text-center text-lg font-semibold mt-5">Loading statistics...</p>;
+  if (loading) {
+    return (
+          <div className="flex justify-center items-center h-screen">
+            <CircularProgress className="-mt-36" />
+          </div>
+        );
+  }
   if (!stats) return <p className="text-center text-lg font-semibold mt-5 text-red-500">Failed to load statistics.</p>;
 
   const scoreData = stats.scoreDistribution.map((item) => ({
     rating: item._id * 10,
     count: item.count,
   }));
-
-  const atsData = stats.atsFriendlyCount.map((item) => ({
-    name: item._id ? "ATS Friendly" : "Not ATS Friendly",
-    value: item.count,
-  }));
+  console.log(stats.atsFriendlyCount);
+  // ✅ Fixed ATS Data Formatting
+  const atsData = [
+    {
+      name: "ATS Friendly",
+      value: stats.atsFriendlyCount.find(item => item._id === 'true')?.count || 0
+    },
+    {
+      name: "Not ATS Friendly",
+      value: stats.atsFriendlyCount.find(item => item._id === 'false')?.count || 0
+    }
+  ];
+  
 
   const COLORS = ["#2ECC71", "#E74C3C"];
 
   return (
-    <div className="min-h-screen flex flex-col items-center px-4">
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10 px-4 -mt-8">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">Resume Analysis Statistics</h1>
 
       {/* Total Resumes */}
@@ -59,29 +76,30 @@ const Stats = () => {
         </ResponsiveContainer>
       </div>
 
-    {/* ATS Friendly Pie Chart */}
-<div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-2xl h-[400px] flex flex-col ">
-  <h2 className="text-xl font-semibold text-gray-700 mb-4">ATS Friendly Resumes</h2>
-  <ResponsiveContainer width="100%" height="80%">
-    <PieChart>
-      <Pie 
-        data={atsData} 
-        cx="50%" 
-        cy="48%"  // Adjust this to avoid cropping
-        outerRadius={120} 
-        fill="#8884d8" 
-        dataKey="value" 
-        label
-      >
-        {atsData.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-        ))}
-      </Pie>
-      <Tooltip />
-      <Legend verticalAlign="bottom" align="center" iconSize={10} wrapperStyle={{ marginTop:80 }}  /> {/* Added spacing */}
-        </PieChart>
-      </ResponsiveContainer>
-    </div>
+      {/* ATS Friendly Pie Chart */}
+      <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-2xl h-[400px] flex flex-col">
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">ATS Friendly Resumes</h2>
+        <ResponsiveContainer width="100%" height="80%">
+          <PieChart>
+            <Pie 
+              data={atsData} 
+              cx="50%" 
+              cy="48%"
+              outerRadius={isMobile ? 100 : 120} 
+              fill="#8884d8" 
+              dataKey="value"
+              nameKey="name"
+              label={isMobile ? "inside" : ({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`} 
+            >
+              {atsData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend verticalAlign="bottom" align="center" iconSize={10} wrapperStyle={{ marginTop: 20 }} />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
 
     </div>
   );

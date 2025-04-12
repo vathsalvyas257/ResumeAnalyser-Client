@@ -8,14 +8,14 @@ export default function About() {
       {/* Hero Section */}
       <header className="text-center py-30 bg-gradient-to-r from-gray-700 to-gray-500 text-white">
         <h1 className="text-6xl font-sans font-medium leading-tight">GT Consulting Services</h1>
-        <p className="mt-4 text-lg max-w-2xl mx-auto">
+        <p className="mt-4 text-lg max-w-2xl mx-auto px-6">
         A technology-driven company dedicated to delivering innovative and reliable software solutions that drive digital transformation. With a strong foundation in Web Development, Mobile App Development, and Custom Software Solutions, we empower businesses to scale, automate, and thrive in the digital age.
         </p>
       </header>
 
       {/* Features Section */}
       <section className="py-16 px-16 text-center">
-        <h2 className="text-6xl font-sans font-medium leading-tight">What We Do?</h2>
+        <h2 className="md:text-6xl font-sans font-medium leading-tight text-4xl">What We Do?</h2>
         <div className="mt-8 grid md:grid-cols-3 gap-8">
           <div className="p-6 bg-white shadow-lg rounded-lg text-center transition-all duration-300 hover:shadow-2xl">
             <Code className="text-blue-600 w-12 h-12 mx-auto" />
@@ -37,7 +37,7 @@ export default function About() {
 
       {/* Who is this for? */}
       <section className="py-16 bg-gray-100 text-center px-16">
-        <h2 className="text-6xl font-sans font-medium leading-tight">Why Choose Us?</h2>
+        <h2 className="md:text-6xl font-sans font-medium leading-tight text-4xl">Why Choose Us?</h2>
         <div className="mt-8 grid md:grid-cols-3 gap-8">
           <div className="p-6 bg-white shadow-lg rounded-lg text-center transition-all duration-300 hover:shadow-2xl">
             <Handshake className="text-blue-600 w-12 h-12 mx-auto" />
@@ -60,7 +60,7 @@ export default function About() {
       {/* Call-To-Action */}
       <section className="py-16 text-center">
         <h2 className="text-3xl font-semibold">Wanna be part of our skillful developers?</h2>
-        <p className="mt-4 text-lg text-gray-600">Get started with our internship program today.</p>
+        <p className="mt-4 text-lg text-gray-600 px-6">Get started with our internship program today.</p>
         <Link to="/">
           <button className="mt-6 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition">
             Get Started

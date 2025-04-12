@@ -109,7 +109,7 @@ const Home = () => {
               <CircleCheckBig color="#7F56D9" /> Instant analysis
             </p>
           </div>
-          <button className="bg-[#7F56D9] mt-6 py-3 px-6 rounded-xl text-lg sm:text-xl text-white font-medium"
+          <button className="bg-[#7F56D9] mt-6 py-3 px-6 rounded-xl text-lg sm:text-xl text-white font-medium md:-mb-16 mb-16"
           onClick={() => {
             isLoggedIn ? navigate("/analyser") : navigate("/login")
             }}>
