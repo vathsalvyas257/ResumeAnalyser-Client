@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import { CircularProgress } from "@mui/material";
 
 const AllResumes = () => {
+  const API_URL = import.meta.env.VITE_API_URL;
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -19,7 +20,7 @@ const AllResumes = () => {
         return;
       }
       try {
-        const response = await axios.get("http://localhost:7777/resume/all", {
+        const response = await axios.get(`${API_URL}/resume/all`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsers(response.data || []);

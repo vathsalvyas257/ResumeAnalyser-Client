@@ -11,6 +11,7 @@ import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 
 const Navbar = () => {
+  const API_URL = import.meta.env.VITE_API_URL;
   const [open, setOpen] = useState(false);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ const Navbar = () => {
   useEffect(()=>{
     const verifyToken = async () =>{
       const token = Cookies.get("token");
-      const response = await axios.get("http://localhost:7777/user/verify-token", {
+      const response = await axios.get(`${API_URL}/user/verify-token`, {
             headers: {
               Authorization: `Bearer ${token}`, // Pass the token
                 "Content-Type": "multipart/form-data",

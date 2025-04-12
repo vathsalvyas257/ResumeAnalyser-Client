@@ -12,6 +12,7 @@ import { resetResume } from "../redux/resumeSlice";
 
 
 const ResumeAnalyzer = () => {
+  const API_URL = import.meta.env.VITE_API_URL;
   const [resumeUploaded, setResumeUploaded] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const [jobRole, setJobRole] = useState("");
@@ -57,7 +58,7 @@ const ResumeAnalyzer = () => {
           console.log(resume); // working
           // Send to backend
     
-          const response = await axios.post("http://localhost:7777/resume/analyse", formData, {
+          const response = await axios.post(`${API_URL}/resume/analyse`, formData, {
             headers: {
               Authorization: `Bearer ${token}`, // Pass the token
               "Content-Type": "multipart/form-data",

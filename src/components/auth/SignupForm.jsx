@@ -16,7 +16,7 @@ const SignupForm = () => {
   const [success, setSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const API_URL = "http://localhost:7777"; // Replace with your backend URL
+  const API_URL = import.meta.env.VITE_API_URL; // Replace with your backend URL
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

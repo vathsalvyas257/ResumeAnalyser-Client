@@ -18,6 +18,7 @@ import { Edit } from "@mui/icons-material";
 import toast from "react-hot-toast";
 
 const ProfilePage = () => {
+  const API_URL = import.meta.env.VITE_API_URL;
   const [user, setUser] = useState(null);
   const [lastTwoResumes, setLastTwoResumes] = useState([]);
   const [missingKeywords, setmissingKeywords] = useState([]);
@@ -38,7 +39,7 @@ const ProfilePage = () => {
         return;
       }
       try {
-        const response = await axios.get("http://localhost:7777/user/profile", {
+        const response = await axios.get(`${API_URL}/user/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(response.data.user);
@@ -60,7 +61,7 @@ const ProfilePage = () => {
   const handleSaveProfile = async () => {
     try {
       const token = Cookies.get("token");
-      const updated_user = await axios.put("http://localhost:7777/user/update-profile", { firstName, lastName }, {
+      const updated_user = await axios.put(`${API_URL}/user/update-profile`, { firstName, lastName }, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUser({ ...user, firstName, lastName });

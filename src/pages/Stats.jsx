@@ -6,13 +6,14 @@ import {
 import { CircularProgress, useMediaQuery } from "@mui/material";
 
 const Stats = () => {
+  const API_URL = import.meta.env.VITE_API_URL;
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const isMobile = useMediaQuery("(max-width:600px)");
 
 
   useEffect(() => {
-    fetch("http://localhost:7777/resume/stats") // Change to your backend API URL
+    fetch(`${API_URL}/resume/stats`) // Change to your backend API URL
       .then((res) => res.json())
       .then((data) => {
         setStats(data);

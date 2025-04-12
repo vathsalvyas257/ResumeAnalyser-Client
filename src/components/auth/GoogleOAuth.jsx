@@ -9,7 +9,7 @@ import { login } from "../../redux/userSlice";
 const GoogleOAuth = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const API_URL = "http://localhost:7777";
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const handleGoogleLogin = async (details) => {
     try {

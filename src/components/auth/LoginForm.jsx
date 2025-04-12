@@ -14,7 +14,7 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch(); //  Redux dispatch
-  const API_URL = "http://localhost:7777";
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
