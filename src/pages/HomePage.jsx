@@ -39,10 +39,10 @@ const Home = () => {
             ⚡
           </h1>
           <p className="text-lg sm:text-lg font-medium text-gray-700">
-            ATS ( Applicant Tracking System ) is a software application used 
-            by HRs and recruiters to manage the hiring process. It helps with tasks like
-            screening and short listing resumes, reviewing applications, and coordinating interviews.
-            So our<img src="/images/Logo.png" alt="Logo" className="inline w-24 h-6" /> supercharges your resume with AI-powered analysis, ensuring it’s
+            ATS ( Applicant Tracking System ) is used 
+            by HRs and recruiters for the hiring process gettting help with tasks like
+            screening and short listing resumes, reviewing applications.
+            <img src="/images/Logo.png" alt="Logo" className="inline w-24 h-6" /> supercharges your resume with AI-powered analysis, ensuring it’s
             ATS-friendly, optimized, and interview-ready in seconds.
           </p>
           <button className="bg-[#7F56D9] py-3 px-6 rounded-xl text-xl text-white font-semibold mx-auto md:mx-0 transition-all duration-300 hover:bg-[#6A45C8] w-[60%]"
