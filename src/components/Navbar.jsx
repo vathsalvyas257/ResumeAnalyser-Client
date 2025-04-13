@@ -204,14 +204,14 @@ const Navbar = () => {
           <>
             <Link
               to="/profile"
-              className={`py-2 ${
+              className={`px-8 mt-1 mb-1 ${
                 isActive("/profile") ? "text-[#7F56D9] font-bold" : ""
-              } hover:text-[#7F56D9] cursor-pointer`}
+              } hover:text-[#7F56D9] cursor-pointer border-3 border-[#7F56D9] rounded-lg font-medium`}
             >
               Profile
             </Link>
             <button
-              className="py-2 text-xl font-medium text-red-600 cursor-pointer"
+              className="text-xl font-medium text-red-600 cursor-pointer border-2 border-red rounded-lg px-6"
               onClick={handleLogout}
             >
               Logout

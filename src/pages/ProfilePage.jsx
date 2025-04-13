@@ -85,7 +85,7 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="bg-neutral-200 min-h-screen flex justify-center items-center mt-[-100px] px-4">
+    <div className="bg-neutral-180 min-h-screen flex justify-center items-center mt-[-100px] px-4">
   <div className="bg-neutral-50 w-full max-w-5xl rounded-2xl mt-[100px] px-4 md:px-10 py-8 mb-16">
     <h1 className="font-medium text-3xl text-center">Profile Page</h1>
 

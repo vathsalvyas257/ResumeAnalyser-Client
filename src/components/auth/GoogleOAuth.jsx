@@ -1,4 +1,4 @@
-import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +24,7 @@ const GoogleOAuth = () => {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
       dispatch(login({ token, user }));
-      toast.success("Login Successful!", {
+      toast.success("Logged in Successfully!", {
         duration: 2000,
         position: "bottom-right",
       });
@@ -35,10 +35,12 @@ const GoogleOAuth = () => {
   };
 
   return (
-    <GoogleLogin
-      onSuccess={(res) => handleGoogleLogin(jwtDecode(res?.credential))}
-      onError={() => toast.error("Google login failed")}
-    />
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID}>
+      <GoogleLogin
+        onSuccess={(res) => handleGoogleLogin(jwtDecode(res?.credential))}
+        onError={() => toast.error("Google login failed")}
+      />
+    </GoogleOAuthProvider>
   );
 };
 
