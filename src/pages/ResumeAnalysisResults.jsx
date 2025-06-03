@@ -9,7 +9,9 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import {uploadResumeSuccess} from "../redux/resumeSlice"
 import { resetResume } from "../redux/resumeSlice";
-import ProgressBar from "../components/ProgressBar"; // Import your ProgressBar component
+import ProgressBar from "../components/ProgressBar";
+import ReportSection from "../components/ReportSection";
+import ResumeUploadForm from "../components/ResumeUploadForm"
 
 
 const ResumeAnalyzer = () => {
@@ -25,7 +27,7 @@ const ResumeAnalyzer = () => {
   const [data, setData] = useState([]);
   const dispatch = useDispatch();
   const { uploaded, resumeResult, role, sectionScores } = useSelector(state => state.resume);
-  console.log("Resume Result:", resumeResult);
+  // console.log("Resume Result:", resumeResult);
 
   const handleResumeUpload = (e) => {
     const file = e.target.files[0];
@@ -60,13 +62,14 @@ const ResumeAnalyzer = () => {
           console.log(resume); // working
           // Send to backend
     
-          const response = await axios.post(`${API_URL}/resume/analyse`, formData, {
+          const response = await axios.post("http://localhost:7777/resume/analyse", formData, {
             headers: {
               Authorization: `Bearer ${token}`, // Pass the token
               "Content-Type": "multipart/form-data",
             },
           });
           console.log("Response: ",response.data);
+          console.log("Personal Info:", response.data.resume.analysis.personalInfo);
           // Set the received response
           setResult(response.data.resume);
           console.log("uploaded:", uploaded)
@@ -143,63 +146,21 @@ const ResumeAnalyzer = () => {
 return (
   <div className="min-h-screen bg-gray-50 p-6">
     {!uploaded ? (
-      <div className="flex justify-center items-start min-h-screen">
-        <div className="w-full max-w-xl flex flex-col gap-6 items-center">
-          {/* Drag & Drop + Click Upload Box */}
-          <motion.label
-            htmlFor="resume-upload"
-            className={`w-80 md:w-126 h-68 bg-[#7F56D9]/70 border ${dragActive ? "border-[#7F56D9] bg-blue-300" : "border-blue-500"} rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:bg-[#7F56D9]/100 transition-all`}
-            whileHover={{ scale: 1.05 }}
-            onDragOver={handleDragOver}
-            onDragEnter={handleDragEnter}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-          >
-            {resume ? (
-              <div className="flex items-center gap-2 text-white">
-                <FileText size={24} />
-                <span className="text-sm text-[#7F56D9]-300">{resume.name}</span>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center">
-                <UploadCloud size={78} className="text-white mb-2" />
-                <p className="text-sm text-white px-16">{dragActive ? "Drop the file here" : "Drag & drop or click to upload your resume (PDF, DOCX)"}</p>
-              </div>
-            )}
-          </motion.label>
-          <input
-            type="file"
-            id="resume-upload"
-            className="hidden"
-            accept=".pdf,.doc,.docx"
-            onChange={handleResumeUpload}
-          />
-
-          <div className="w-full">
-            <label htmlFor="job-role" className="block text-lg font-medium text-gray-700 mb-2">
-              Enter Target Job Role:
-            </label>
-            <input
-              id="job-role"
-              type="text"
-              value={jobRole}
-              onChange={(e) => setJobRole(e.target.value)}
-              placeholder="e.g., Frontend Developer"
-              className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#7F56D9]"
-            />
-          </div>
-
-          {resumeUploaded && jobRole.trim() !== "" && (
-            <button
-              onClick={handleAnalyze}
-              className="w-full py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition cursor-pointer"
-              disabled={loading}
-            >
-              {loading ? "Analyzing..." : "Analyze Resume"}
-            </button>
-          )}
-        </div>
-      </div>
+      <ResumeUploadForm
+          resume={resume}
+          setResume={setResume}
+          handleResumeUpload={handleResumeUpload}
+          handleDragOver={handleDragOver}
+          handleDragEnter={handleDragEnter}
+          handleDragLeave={handleDragLeave}
+          handleDrop={handleDrop}
+          dragActive={dragActive}
+          jobRole={jobRole}
+          setJobRole={setJobRole}
+          handleAnalyze={handleAnalyze}
+          resumeUploaded={resumeUploaded}
+          loading={loading}
+        />
     ) : (
       <div className="flex h-screen bg-gray-50">
         {/* Fixed Resume Analysis Sidebar */}
@@ -247,138 +208,113 @@ return (
           <div className="p-6">
             <h1 className="font-semibold text-[30px] leading-[100%] tracking-[0%] w-full h-[36px] bg-gradient-to-r from-[#256EFF] to-[#164299] text-transparent bg-clip-text font-['Inter'] text-center">Resume Report</h1>
             <div className="space-y-6 max-w-4xl mx-auto">
+
               {/* Candidate Profile Section */}
-              <section className="bg-white rounded-4xl border border-gray-300 border-l-6 border-l-blue-600 p-5 shadow-sm">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="bg-gradient-to-b from-[#256EFF] to-[#164299] text-white rounded-full p-2">
-                    <User size={25} />
-                  </div>
-
-                  <h3 className="text-xl font-bold text-blue-600">Candidate Profile</h3>
+              <ReportSection
+                icon={<User size={25} />}
+                title="Candidate Profile"
+              >
+                <ul className="list-disc list-inside space-y-1">
+                  {resumeResult.personalInfo?.name && (
+                    <li><strong>Name:</strong> {resumeResult.personalInfo.name}</li>
+                  )}
+                  {resumeResult.personalInfo?.email && (
+                    <li><strong>Email:</strong> {resumeResult.personalInfo.email}</li>
+                  )}
+                  {resumeResult.personalInfo?.phone && (
+                    <li><strong>Phone:</strong> {resumeResult.personalInfo.phone}</li>
+                  )}
+                  {resumeResult.personalInfo?.location && (
+                    <li><strong>Location:</strong> {resumeResult.personalInfo.location}</li>
+                  )}
+                </ul>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm mt-4">
+                  <p><strong>ATS Score:</strong> {resumeResult.analysis.score}/100</p>
+                  <p><strong>Readability:</strong> {resumeResult.analysis.readabilityScore}/100</p>
                 </div>
-                <div className="text-gray-700 leading-relaxed space-y-3">
-                  <p className="text-sm font-medium text-gray-600">Basic info overview</p>
-                  <div className="space-y-1 text-md">
-                    <ul className="list-disc list-inside">
-                      <li><strong>Name:</strong> [Your Name]</li>
-                      <li><strong>Email:</strong> [your.email@example.com]</li>
-                      <li><strong>Phone:</strong> +91-XXXXXXXXXX</li>
-                      <li><strong>Location:</strong> [City, State]</li>
-                    </ul>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm mt-4">
-                    <p><strong>ATS Score:</strong> {resumeResult.analysis.score}/100</p>
-                    <p><strong>Readability:</strong> {resumeResult.analysis.readabilityScore}/100</p>
-                  </div>
-                  <p className="text-md mt-3 text-gray-600">{resumeResult.analysis.detailedDescription}</p>
-                </div>
-              </section>
+                <p className="text-md mt-3 text-gray-600">{resumeResult.analysis.detailedDescription}</p>
+              </ReportSection>
 
               {/* Education Section */}
-              <section className="bg-white rounded-4xl border border-gray-300 border-l-6 border-l-blue-600 p-5 shadow-sm">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="bg-gradient-to-b from-[#256EFF] to-[#164299] text-white rounded-full p-2">
-                    <GraduationCap size={25} />
-                  </div>
-                  <h3 className="text-xl font-bold text-blue-600">Education</h3>
-                </div>
-                <div className="text-gray-700 text-md leading-relaxed space-y-1">
-                  <p className="font-medium text-gray-600">Academic background</p>
-                  <p><strong>[Your Degree] - [Your Branch]</strong></p>
-                  <p>[University Name] - [Year]</p>
-                  <p>CGPA: X.X / 10</p>
-                  {/* <p className="mt-3">Based on resume analysis for <strong>{role}</strong> position</p> */}
-                </div>
-              </section>
+              {resumeResult?.education?.length > 0 && (
+                <ReportSection icon={<GraduationCap size={25} />} title="Education">
+                  {resumeResult.education.map((edu, idx) => (
+                    <div key={idx} className="space-y-1">
+                      {edu.degree && (
+                        <p>
+                          <strong>{edu.degree}</strong>
+                          {edu.branch && ` - ${edu.branch}`}
+                        </p>
+                      )}
+                      {edu.university && <p>{edu.university}</p>}
+                      {edu.year && <p>{edu.year}</p>}
+                      {edu.cgpa && <p>CGPA: {edu.cgpa} / 10</p>}
+                    </div>
+                  ))}
+                </ReportSection>
+              )}
 
               {/* Experience Section */}
-              <section className="bg-white rounded-4xl border border-gray-300 border-l-6 border-l-blue-600 p-5 shadow-sm">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="bg-gradient-to-b from-[#256EFF] to-[#164299] text-white rounded-full p-2">
-                    <Briefcase size={25} />
-                  </div>
-                  <h3 className="text-xl font-bold text-blue-600">Experience</h3>
-                </div>
-                <div className="text-gray-700 text-md leading-relaxed space-y-1">
-                  <p className="font-medium text-gray-600">Industry / Internship exposure</p>
-                  <p><strong>[Role Title] at [Company]</strong></p>
-                  <ul className="list-disc list-inside space-y-1 mt-2">
-                    <li>Handled end-to-end projects in real-world settings.</li>
-                    <li>Collaborated with cross-functional teams.</li>
-                    <li>Contributed to documentation, development, or design.</li>
-                  </ul>
-                </div>
-              </section>
+              {resumeResult?.experience?.length > 0 &&
+                resumeResult.experience.filter(
+                  (exp) => exp.role && exp.company && exp.description
+                ).length > 0 && (
+                  <ReportSection icon={<Briefcase size={25} />} title="Experience">
+                    <p className="font-medium text-gray-600">Industry / Internship exposure</p>
+                    {resumeResult.experience
+                      .filter((exp) => exp.role && exp.company && exp.description)
+                      .map((exp, idx) => (
+                        <div key={idx} className="space-y-1">
+                          <p>
+                            <strong>{exp.role} at {exp.company}</strong>
+                          </p>
+                          <p>{exp.description}</p>
+                        </div>
+                      ))}
+                  </ReportSection>
+              )}
 
               {/* Core Skills Section */}
-              <section className="bg-white rounded-4xl border border-gray-300 border-l-6 border-l-blue-600 p-5 shadow-md">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="bg-gradient-to-b from-[#256EFF] to-[#164299] text-white rounded-full p-2">
-                    <Settings size={25} />
-                  </div>
-                  <h3 className="text-xl font-bold text-blue-600">Core Skills</h3>
-                </div>
-                <div className="text-sm text-gray-700 space-y-3">
-                  <p className="font-medium text-gray-600">Technical and soft skills</p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <p className="font-semibold mb-2">Hard Skills:</p>
-                      <p>Java, C++, Python, AutoCAD, MATLAB, Analytical, Problem Solving, Logical Thinking</p>
-                    </div>
-                    <div>
-                      <p className="font-semibold mb-2">Soft Skills:</p>
-                      <p>Leadership, Public Speaking, Software: MS Office, Figma, Excel</p>
+              {resumeResult.skills && Object.keys(resumeResult.skills).length > 0 && (
+                <ReportSection icon={<Settings size={25} />} title="Core Skills" className="shadow-md">
+                  <div className="text-sm text-gray-700 space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {Object.entries(resumeResult.skills).map(([category, skills], index) =>
+                        skills && skills.length > 0 ? (
+                          <div key={index}>
+                            <p className="font-semibold mb-2 capitalize">
+                              {category.replace(/([A-Z])/g, " $1")}:
+                            </p>
+                            <p>{skills.join(", ")}</p>
+                          </div>
+                        ) : null
+                      )}
                     </div>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
-                    {sectionScores.map((section, index) => (
-                      <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg border">
-                        <span className="font-semibold">{section.section}:</span>
-                        <span className={`font-bold ${section.score > 70 ? 'text-green-600' : section.score > 50 ? 'text-yellow-600' : 'text-red-600'}`}>
-                          {section.score}%
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </section>
+                </ReportSection>
+              )}
 
               {/* Missing Keywords Section */}
-              <section className="bg-white rounded-4xl border border-gray-300 border-l-6 border-l-blue-600 p-5 shadow-md">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="bg-gradient-to-b from-[#256EFF] to-[#164299] text-white rounded-full p-2">
-                    <AlertCircle size={25} />
-                  </div>
-                  <h3 className="text-xl font-bold text-blue-600">Missing Keywords</h3>
-                </div>
+              <ReportSection icon={<AlertCircle size={25} />} title="Missing Keywords" className="shadow-md">
                 <p className="text-sm text-gray-600 mb-4">To enhance your resume visibility</p>
                 <div className="flex flex-wrap gap-2">
                   {resumeResult.analysis.missingKeywords?.length > 0 ? (
                     resumeResult.analysis.missingKeywords.map((keyword, index) => (
-                      <span key={index} className="px-4 py-2 bg-red-100 text-red-600 border border-red-300 rounded-full text-sm font-medium">
+                      <span
+                        key={index}
+                        className="px-4 py-2 bg-red-100 text-red-600 border border-red-300 rounded-full text-sm font-medium"
+                      >
                         {keyword}
                       </span>
                     ))
                   ) : (
-                    <div className="flex flex-wrap gap-2">
-                      <span className="px-4 py-2 bg-red-100 text-red-600 border border-red-300 rounded-full text-sm font-medium">Software Development</span>
-                      <span className="px-4 py-2 bg-red-100 text-red-600 border border-red-300 rounded-full text-sm font-medium">Web Development</span>
-                      <span className="px-4 py-2 bg-red-100 text-red-600 border border-red-300 rounded-full text-sm font-medium">Full Stack</span>
-                      <span className="px-4 py-2 bg-red-100 text-red-600 border border-red-300 rounded-full text-sm font-medium">Problem Solving</span>
-                    </div>
+                    <p className="text-gray-500 text-sm italic">No missing keywords detected.</p>
                   )}
                 </div>
-              </section>
+              </ReportSection>
 
               {/* Suggested Career Roles Section */}
-              <section className="bg-white rounded-4xl border border-gray-300 border-l-6 border-l-blue-600 p-5 shadow-md">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="bg-gradient-to-b from-[#256EFF] to-[#164299] text-white rounded-full p-2">
-                    <Briefcase size={25} />
-                  </div>
-                  <h3 className="text-xl font-bold text-blue-600">Suggested Career Roles</h3>
-                </div>
+              <ReportSection icon={<Briefcase size={25} />} title="Suggested Career Roles" className="shadow-md">
                 <p className="text-md text-gray-600 mb-4">Matching your resume content</p>
                 <div className="text-md text-gray-700">
                   {resumeResult.analysis.suggestedJobs?.length > 0 ? (
@@ -391,31 +327,10 @@ return (
                       ))}
                     </ul>
                   ) : (
-                    <ul className="space-y-2">
-                      <li className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
-                        Graduate Trainee / Engineer
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
-                        Research Assistant / Analyst
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
-                        Software Developer / Engineer
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
-                        Quality / Process Engineer
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
-                        Academic Research Contributor
-                      </li>
-                    </ul>
+                    <p className="text-gray-500 italic">No suggested career roles available at this time.</p>
                   )}
                 </div>
-              </section>
+              </ReportSection>
             </div>
 
             {/* Upload New Resume Button */}
